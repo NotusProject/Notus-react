@@ -15,7 +15,6 @@ interface AuthProviderProps {
 }
 
 export function AuthProvider({children}: AuthProviderProps) {
-   const navigate = useNavigate();
    const [loading, setLoading] = useState(true);
    const [user, setUser] = useState<Models.User<Models.Preferences> | null>(null);
    

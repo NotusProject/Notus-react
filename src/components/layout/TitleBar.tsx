@@ -4,7 +4,7 @@ export default function Titlebar() {
     return (
         <WindowTitlebar
             controlsOrder="platform"
-            className="h-13 rounded-t-lg   shadow border-b border-b-zinc-900"
+            className="h-13 rounded-t-lg sm:hidden md:flex   shadow border-b  border-b-zinc-900"
             windowControlsProps={{
                 platform: 'windows',
             }}

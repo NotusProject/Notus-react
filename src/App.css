@@ -5,6 +5,9 @@ body, html {
     @apply bg-zinc-50 dark:bg-zinc-950 h-full overflow-hidden;
 }
 
+header {
+    @apply md:!hidden;
+}
 html.dark body {
     background-image: radial-gradient(at 100% 0%, hsla(258, 89%, 66%, 0.7) 0px, transparent 50%)
 }

@@ -1,26 +1,19 @@
-
 import React from 'react';
 import {Route, Routes} from 'react-router-dom';
-import Register from './pages/Register';
-import Login from './pages/Login';
-import {AuthProvider} from "./utils/useAuth.tsx";
-// import Home from './pages/Home';
-// import About from './pages/About';
+import ProtectedRoute from "./utils/ProtectedRoute.tsx";
+
+function Home() {
+	return <div>hello</div>;
+}
 
 const AppRoutes: React.FC = () => {
-   return (
-	 <AuthProvider>
+	return (
 		<Routes>
-		   
-		   {/* <Route path="/" element={<Home />} /> */}
-			<Route path="/" element={<Login/>}/>
-
-		   <Route path="/register" element={<Register/>}/>
-		   {/* <Route path="/about" element={<About />} /> */}
+			<Route element={<ProtectedRoute/>}>
+				<Route path="/" element={<Home/>}/>
+			</Route>
 		</Routes>
-	 </AuthProvider>
-
-   );
+	);
 };
 
 export default AppRoutes;
