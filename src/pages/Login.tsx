@@ -42,7 +42,7 @@ export default function Login() {
 				alt="Your Company"
 			  />
 			  <h2
-				className="mt-6 text-center text-2xl font-bold leading-9 tracking-tight ">
+				  className="mt-2 text-center text-2xl font-bold leading-9 tracking-tight ">
 				 Sign in to your account
 			  </h2>
 		   </div>

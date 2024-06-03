@@ -10,6 +10,7 @@ import {account} from "../services/appwrite.ts";
 import {ID} from "appwrite";
 import {FormEvent, useRef} from "react";
 import {Link} from "react-router-dom";
+import Spline3D from "../components/layout/Spline3D.tsx";
 
 export default function Register() {
    const registerForm = useRef<HTMLFormElement>(null);
@@ -36,24 +37,27 @@ export default function Register() {
    }
    return (
 	 <>
-		
+
 		<div
-		  className="flex min-h-full flex-1 flex-col justify-center py-2 sm:px-6 lg:px-8">
-		   <div className="sm:mx-auto sm:w-full sm:max-w-md">
+			className="flex relative  z-10 min-h-full flex-1 flex-col justify-center py-6 sm:px-6 lg:px-8">
+
+			<Spline3D/>
+
+			<div className="sm:mx-auto sm:w-full sm:max-w-md">
 			  <img
 				className="mx-auto h-10 w-auto"
 				src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600"
 				alt="Your Company"
 			  />
 			  <h2
-				className="mt-6 text-center text-2xl font-bold leading-9 tracking-tight ">
+				  className="mt-2 text-center text-2xl font-bold leading-9 tracking-tight ">
 				 Sign in to your account
 			  </h2>
 		   </div>
 		   
 		   <div className="mt-4 sm:mx-auto sm:w-full sm:max-w-[480px]">
 			  <div
-				className="bg-white dark:bg-zinc-900 px-6 py-12 shadow sm:rounded-lg sm:px-12">
+				  className="bg-white dark:bg-zinc-900 px-6 py-10 shadow sm:rounded-lg sm:px-12">
 				 <form ref={registerForm} onSubmit={handleRegistration}
 					   className="space-y-6">
 					<Field>
