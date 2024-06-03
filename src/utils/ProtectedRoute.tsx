@@ -6,6 +6,11 @@ import {useAuth} from './useAuth';
 </ProtectedRoute>
 */
 export default function ProtectedRoute() {
-   const {user} = useAuth();
-   return user ? <Outlet/> : <Navigate to="/login"/>;
+    const auth = useAuth();
+
+    if (auth.loading) {
+        return <div>Loading</div>;
+    }
+    console.log(auth);
+    return auth.user ? <Outlet/> : <Navigate to="/login"/>;
 }

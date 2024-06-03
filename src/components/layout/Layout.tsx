@@ -24,7 +24,6 @@ import {
 import * as Headless from '@headlessui/react'
 import {
     ArrowRightStartOnRectangleIcon,
-    ChevronDownIcon,
     ChevronUpIcon,
     Cog8ToothIcon,
     LightBulbIcon,
@@ -33,6 +32,7 @@ import {
     UserIcon,
 } from '@heroicons/react/16/solid'
 import {
+    ChevronDownIcon,
     Cog6ToothIcon,
     HomeIcon,
     InboxIcon,
@@ -43,6 +43,10 @@ import {
     Square2StackIcon,
     TicketIcon,
 } from '@heroicons/react/20/solid'
+import {BellIcon, GlobeAltIcon, UserGroupIcon} from "@heroicons/react/24/solid";
+import {Disclosure, DisclosureButton, DisclosurePanel} from "@headlessui/react";
+import {AnimatePresence, easeOut, motion} from "framer-motion";
+import clsx from "clsx";
 // const Layout2 = ({children}) => {
 //     return (
 //         // <div className={'overflow-hidden'}>
@@ -138,13 +142,13 @@ function Layout({children}) {
                             </DropdownMenu>
                         </Dropdown>
                         <SidebarSection className="max-lg:hidden">
-                            <SidebarItem href="/search">
+                            <SidebarItem current={true} href="/search">
                                 <MagnifyingGlassIcon/>
                                 <SidebarLabel>Search</SidebarLabel>
                             </SidebarItem>
                             <SidebarItem href="/inbox">
                                 <InboxIcon/>
-                                <SidebarLabel>Inbox</SidebarLabel>
+                                <SidebarLabel>Direct Messages</SidebarLabel>
                             </SidebarItem>
                         </SidebarSection>
                     </SidebarHeader>
@@ -155,28 +159,23 @@ function Layout({children}) {
                                 <SidebarLabel>Home</SidebarLabel>
                             </SidebarItem>
                             <SidebarItem href="/events">
-                                <Square2StackIcon/>
-                                <SidebarLabel>Events</SidebarLabel>
+                                <BellIcon/>
+                                <SidebarLabel>Notifications</SidebarLabel>
                             </SidebarItem>
                             <SidebarItem href="/orders">
-                                <TicketIcon/>
-                                <SidebarLabel>Orders</SidebarLabel>
+                                <UserGroupIcon/>
+                                <SidebarLabel>Friends</SidebarLabel>
                             </SidebarItem>
-                            <SidebarItem href="/settings">
-                                <Cog6ToothIcon/>
-                                <SidebarLabel>Settings</SidebarLabel>
-                            </SidebarItem>
+
                             <SidebarItem href="/broadcasts">
-                                <MegaphoneIcon/>
-                                <SidebarLabel>Broadcasts</SidebarLabel>
+                                <GlobeAltIcon/>
+                                <SidebarLabel>Discover</SidebarLabel>
                             </SidebarItem>
                         </SidebarSection>
                         <SidebarSection className="max-lg:hidden">
-                            <SidebarHeading>Upcoming Events</SidebarHeading>
-                            <SidebarItem href="/events/1">Bear Hug: Live in Concert</SidebarItem>
-                            <SidebarItem href="/events/2">Viking People</SidebarItem>
-                            <SidebarItem href="/events/3">Six Fingers — DJ Set</SidebarItem>
-                            <SidebarItem href="/events/4">We All Look The Same</SidebarItem>
+
+                            <PinnedChats/>
+
                         </SidebarSection>
                         <SidebarSpacer/>
                         <SidebarSection>
@@ -237,6 +236,65 @@ function Layout({children}) {
             {children}
             {/*<main id={'main'} className={'mt-13 min-w-full h-dvh overflow-y-auto'}>    </main>*/}
         </SidebarLayout>
+
+    )
+}
+
+function PinnedChats() {
+    return (
+        <Disclosure as="div" className="w-full max-w-md" defaultOpen={true}>
+            {({open}) => (
+                <>
+                    <DisclosureButton className="group flex w-full items-center justify-between">
+                        <div className="flex items-center gap-2">
+                            <ChevronDownIcon
+                                className="size-5 fill-white/60 group-data-[hover]:fill-white/50 group-data-[open]:rotate-180"/>
+                            <SidebarHeading
+                                className={'text-sm/6 mb-0 font-medium text-white group-data-[hover]:text-white/80'}>Pinned
+                                Chats</SidebarHeading>
+                        </div>
+                        <PlusIcon
+                            className="size-5 fill-white/60 group-data-[hover]:fill-white/50 group-data-[open]:rotate-180"/>
+                    </DisclosureButton>
+                    <div className="overflow-hidden py-2">
+                        <AnimatePresence>
+                            {open && (
+                                <DisclosurePanel
+                                    static
+                                    as={motion.ul}
+                                    initial={{opacity: 0, y: -24}}
+                                    animate={{opacity: 1, y: 0}}
+                                    exit={{opacity: 0, y: -24}}
+                                    transition={{duration: 0.2, ease: easeOut}}
+                                    className="origin-top flex flex-col gap-2"
+                                >
+                                    < MediaObjects initials={'VY'}/>
+                                    < MediaObjects initials={'MU'}/>
+                                    < MediaObjects initials={'NG'}/>
+                                </DisclosurePanel>
+                            )}
+                        </AnimatePresence>
+                    </div>
+                </>
+            )}
+        </Disclosure>
+    )
+}
+
+export function MediaObjects
+({initials}) {
+    return (
+        <a className="flex cursor-pointer group items-center gap-4">
+            <Avatar initials={initials} className="size-8 bg-zinc-500"/>
+            <div>
+                <div className="font-medium text-sm">{'Vynxc'}</div>
+                <div className="text-zinc-400">
+                    <span className="group-hover:text-zinc-500 text-xs line-clamp-1">
+                        {'lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.'}
+                    </span>
+                </div>
+            </div>
+        </a>
 
     )
 }

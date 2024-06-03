@@ -1,24 +1,25 @@
 import {WindowTitlebar} from "tauri-controls";
+import {Input, InputGroup} from "../common/input.tsx";
+import {MagnifyingGlassIcon} from "@heroicons/react/20/solid";
 
 export default function Titlebar() {
     return (
         <WindowTitlebar
             controlsOrder="platform"
-            className="h-13 rounded-t-lg sm:hidden md:flex   shadow border-b  border-b-zinc-900"
+            className="h-13 rounded-t-lg sm:hidden md:flex   shadow   "
             windowControlsProps={{
                 platform: 'windows',
+
             }}
             data-tauri-drag-region
         >
-            <div className="ml-3 flex items-center" data-tauri-drag-region>
-                {/*<LogoSvg/>*/}
-            </div>
+
 
             <div
-                className="flex w-full items-center justify-center"
+                className="flex w-full  items-center justify-center"
                 data-tauri-drag-region
             >
-                Title
+                Notus
             </div>
         </WindowTitlebar>
     )

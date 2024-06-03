@@ -8,6 +8,7 @@ body, html {
 header {
     @apply md:!hidden;
 }
-html.dark body {
-    background-image: radial-gradient(at 100% 0%, hsla(258, 89%, 66%, 0.7) 0px, transparent 50%)
-}
+
+/*html.dark body {*/
+/*    background-image: radial-gradient(at 100% 0%, hsla(258, 89%, 66%, 0.7) 0px, transparent 50%)*/
+/*}*/
