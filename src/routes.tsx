@@ -1,3 +1,4 @@
+
 import React from 'react';
 import {Route, Routes} from 'react-router-dom';
 import Register from './pages/Register';
@@ -12,12 +13,13 @@ const AppRoutes: React.FC = () => {
 		<Routes>
 		   
 		   {/* <Route path="/" element={<Home />} /> */}
-		   <Route path="/login" element={<Login/>}/>
+			<Route path="/" element={<Login/>}/>
+
 		   <Route path="/register" element={<Register/>}/>
 		   {/* <Route path="/about" element={<About />} /> */}
 		</Routes>
 	 </AuthProvider>
-   
+
    );
 };
 

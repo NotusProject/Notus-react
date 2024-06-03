@@ -2,7 +2,7 @@
 @tailwind components;
 @tailwind utilities;
 body, html {
-    @apply bg-zinc-50 dark:bg-zinc-950;
+    @apply bg-zinc-50 dark:bg-zinc-950 h-full overflow-hidden;
 }
 
 html.dark body {

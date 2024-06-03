@@ -9,6 +9,7 @@ import {Button} from "../components/common/button.tsx";
 import {Link} from "react-router-dom";
 import {FormEvent, useRef} from "react";
 import {account} from "../services/appwrite.ts";
+import Spline3D from "../components/layout/Spline3D.tsx";
 
 export default function Login() {
    const loginForm = useRef<HTMLFormElement>(null);
@@ -29,10 +30,12 @@ export default function Login() {
    };
    return (
 	 <>
-		
-		<div
-		  className="flex min-h-full flex-1 flex-col justify-center py-6 sm:px-6 lg:px-8">
-		   <div className="sm:mx-auto sm:w-full sm:max-w-md">
+
+		 <div
+			 className="flex relative  z-10 min-h-full flex-1 flex-col justify-center py-6 sm:px-6 lg:px-8">
+			 <Spline3D/>
+
+			 <div className="sm:mx-auto sm:w-full sm:max-w-md">
 			  <img
 				className="mx-auto h-10 w-auto"
 				src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600"
