@@ -1,13 +1,32 @@
-import {Input, InputGroup} from "./input.tsx";
-import {Field, Label} from "./fieldset.tsx";
+import {Input, InputGroup} from "../components/common/input.tsx";
+import {Field, Label} from "../components/common/fieldset.tsx";
 import {
    EnvelopeIcon,
    KeyIcon
 } from "@heroicons/react/24/solid";
-import {Checkbox, CheckboxField} from "./checkbox.tsx";
-import {Button} from "./button.tsx";
+import {Checkbox, CheckboxField} from "../components/common/checkbox.tsx";
+import {Button} from "../components/common/button.tsx";
+import {Link} from "react-router-dom";
+import {FormEvent, useRef} from "react";
+import {account} from "../services/appwrite.ts";
 
-export default function Example() {
+export default function Login() {
+   const loginForm = useRef<HTMLFormElement>(null);
+   
+   const handleLogin = async (e: FormEvent<HTMLFormElement>) => {
+	  e.preventDefault();
+	  const email = loginForm.current?.email?.value as string;
+	  const password = loginForm.current?.password?.value as string;
+	  
+	  try {
+		 const response = await account.createEmailPasswordSession(email, password);
+		 console.log("User has been Logged In:", response);
+		 // Redirect or perform further actions upon successful login
+	  } catch (error) {
+		 console.error("Login failed:", error);
+		 // Handle login errors appropriately
+	  }
+   };
    return (
 	 <>
 		
@@ -28,12 +47,13 @@ export default function Example() {
 		   <div className="mt-6 sm:mx-auto sm:w-full sm:max-w-[480px]">
 			  <div
 				className="bg-white dark:bg-zinc-900 px-6 py-12 shadow sm:rounded-lg sm:px-12">
-				 <form className="space-y-6" action="#" method="POST">
+				 <form ref={loginForm} onSubmit={handleLogin}
+					   className="space-y-6">
 					<Field>
 					   <Label>Email address</Label>
 					   <InputGroup>
 						  <EnvelopeIcon/>
-						  <Input name="search" placeholder="email@example.com"
+						  <Input name="email" placeholder="email@example.com"
 								 required={true} aria-label="Email"/>
 					   </InputGroup>
 					</Field>
@@ -127,10 +147,10 @@ export default function Example() {
 			  
 			  <p className="mt-6 text-center text-sm text-gray-500">
 				 Not a member?{' '}
-				 <a href="#"
+				 <Link to="/register"
 					className="font-semibold leading-6 text-violet-600 hover:text-violet-500">
-					Start a 14 day free trial
-				 </a>
+					Register Now
+				 </Link>
 			  </p>
 		   </div>
 		</div>
