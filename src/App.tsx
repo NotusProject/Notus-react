@@ -4,7 +4,7 @@ import Layout from "./components/layout/Layout.tsx";
 import Titlebar from "./components/layout/TitleBar.tsx";
 import Login from './pages/Login';
 import Register from './pages/Register';
-import {AuthProvider} from "./utils/useAuth.tsx";
+import {AuthProvider} from "./hooks/useAuth.tsx";
 
 function App() {
 	return (

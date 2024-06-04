@@ -6,6 +6,7 @@ import {LayoutGroup, motion} from 'framer-motion'
 import React, {Fragment, useId} from 'react'
 import {TouchTarget} from './button'
 import {Link} from './link'
+import {useLocation} from "react-router-dom";
 
 export function Sidebar({
 						   className,
@@ -100,17 +101,18 @@ export function SidebarHeading({
 }
 
 export const SidebarItem = React.forwardRef(function SidebarItem(
-  {
-	 current,
-	 className,
-	 children,
-	 ...props
-  }: { current?: boolean; className?: string; children: React.ReactNode } & (
-	| Omit<Headless.ButtonProps, 'className'>
-	| Omit<React.ComponentPropsWithoutRef<typeof Link>, 'type' | 'className'>
-	),
-  ref: React.ForwardedRef<HTMLAnchorElement | HTMLButtonElement>
+	{
+		className,
+		children,
+		...props
+	}: { className?: string; children: React.ReactNode } & (
+		| Omit<Headless.ButtonProps, 'className'>
+		| Omit<React.ComponentPropsWithoutRef<typeof Link>, 'type' | 'className'>
+		),
+	ref: React.ForwardedRef<HTMLAnchorElement | HTMLButtonElement>
 ) {
+	const router = useLocation();
+	const isCurrent = 'href' in props && router.pathname === props.href;
    let classes = clsx(
 	 // Base
 	 'flex w-full items-center gap-3 rounded-lg px-2 py-2.5 text-left text-base/6 font-medium text-zinc-950 sm:py-2 sm:text-sm/5',
@@ -132,19 +134,19 @@ export const SidebarItem = React.forwardRef(function SidebarItem(
 	 'dark:data-[active]:bg-white/5 dark:data-[slot=icon]:*:data-[active]:fill-white',
 	 'dark:data-[slot=icon]:*:data-[current]:fill-white'
    )
-   
+
    return (
 	 <span className={clsx(className, 'relative')}>
-      {current && (
+      {isCurrent && (
 		<motion.span
 		  layoutId="current-indicator"
-		  className="absolute inset-y-2 -left-4 w-0.5 rounded-full bg-zinc-950 dark:bg-white"
+		  className="absolute inset-y-1 -left-4 w-1 rounded-full bg-violet-500"
 		/>
 	  )}
 		{'href' in props ? (
 		  <Headless.CloseButton as={Fragment} ref={ref}>
 			 <Link className={classes} {...props}
-				   data-current={current ? 'true' : undefined}>
+				   data-current={isCurrent ? 'true' : undefined}>
 				<TouchTarget>{children}</TouchTarget>
 			 </Link>
 		  </Headless.CloseButton>
@@ -152,7 +154,7 @@ export const SidebarItem = React.forwardRef(function SidebarItem(
 		  <Headless.Button
 			{...props}
 			className={clsx('cursor-default', classes)}
-			data-current={current ? 'true' : undefined}
+			data-current={isCurrent ? 'true' : undefined}
 			ref={ref}
 		  >
 			 <TouchTarget>{children}</TouchTarget>

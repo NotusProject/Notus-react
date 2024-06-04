@@ -1,6 +1,6 @@
-import {createContext, useState, useEffect, useContext, ReactNode} from "react";
+import {createContext, ReactNode, useContext, useEffect, useState} from "react";
 import {Models} from "appwrite";
-import {account} from "../services/appwrite";
+import {account} from "../services/appwrite.ts";
 
 interface AuthContextValue {
    user: Models.User<Models.Preferences> | null;

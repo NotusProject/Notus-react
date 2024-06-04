@@ -1,7 +1,7 @@
 import React from 'react';
 import {Route, Routes} from 'react-router-dom';
 import ProtectedRoute from "./utils/ProtectedRoute.tsx";
-import FriendRequests from "./pages/Friends.tsx";
+import FriendsPage from "./pages/Friends.tsx";
 
 function Home() {
 	return (
@@ -23,7 +23,7 @@ const AppRoutes: React.FC = () => {
 		<Routes>
 			<Route element={<ProtectedRoute/>}>
 				<Route path="/" element={<Home/>}/>
-				<Route path="/friends" element={<FriendRequests/>}/>
+				<Route path="/friends" element={<FriendsPage/>}/>
 			</Route>
 		</Routes>
 	);
