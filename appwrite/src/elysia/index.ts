@@ -9,8 +9,7 @@ const app = new Elysia()
 		});
 		return new Response(JSON.stringify(toReturn), {
 			headers: {
-				"content-type": "application/json",
-				headers: encodeURIComponent(JSON.stringify(toReturn)),
+				"content-type": encodeURIComponent(JSON.stringify(toReturn)),
 			},
 		});
 	})
