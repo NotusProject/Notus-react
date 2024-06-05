@@ -1,16 +1,19 @@
-import { type Context, toRequest, toResponse } from "@vynxc/appwrite-utils";
-import { Hono } from "hono";
-import friends from "./routes/friends";
+import {
+	type Context,
+	toRequest,
+	toResponse,
+	type Response,
+} from "@vynxc/appwrite-utils";
 
-const routes = [friends];
+import app from "./elysia";
+import eventHandler from "./events";
 
-const app = new Hono();
-app.get("/", (event) => new Response("Hello World!"));
-
-routes.forEach((route) => app.route("/", route));
-
-export default async function server(ctx: Context) {
+export default async function server(ctx: Context): Promise<Response> {
+	const eventrsp = await eventHandler.pipe(ctx);
+	if (eventrsp) {
+		return eventrsp;
+	}
 	const request = toRequest(ctx.req);
-	const honoResposne = await app.fetch(request);
+	const honoResposne = await app.handle(request);
 	return await toResponse(honoResposne);
 }
