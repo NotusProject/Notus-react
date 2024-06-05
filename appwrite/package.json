@@ -1,16 +1,16 @@
 {
-  "name": "appwrite-function",
-  "module": "index.ts",
-  "type": "module",
-  "devDependencies": {
-    "@types/bun": "latest"
-  },
-  "peerDependencies": {
-    "typescript": "^5.0.0"
-  },
-  "dependencies": {
-    "@elysiajs/swagger": "^1.0.5",
-    "@vynxc/appwrite-utils": "^1.0.0",
-    "elysia": "^1.0.22"
-  }
+	"name": "appwrite-function",
+	"module": "index.ts",
+	"type": "module",
+	"devDependencies": {
+		"@types/bun": "latest"
+	},
+	"peerDependencies": {
+		"typescript": "^5.0.0"
+	},
+	"dependencies": {
+		"@elysiajs/swagger": "^1.0.5",
+		"@vynxc/appwrite-utils": "^1.0.2",
+		"elysia": "^1.0.22"
+	}
 }
