@@ -7,7 +7,12 @@ const app = new Elysia()
 		data.request.headers.forEach((value, key) => {
 			toReturn.push({ [key]: value });
 		});
-		return toReturn;
+		return new Response(JSON.stringify(toReturn), {
+			headers: {
+				"content-type": "application/json",
+				headers: encodeURIComponent(JSON.stringify(toReturn)),
+			},
+		});
 	})
 	.get("/friends/add/:username", ({ params }) => {
 		const username = params.username;
