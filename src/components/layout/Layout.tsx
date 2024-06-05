@@ -99,6 +99,7 @@ function Layout({children}: { children: React.ReactNode }) {
             }
         >
             {/* The page content */}
+            
             {children}
         </SidebarLayout>
 

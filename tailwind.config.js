@@ -8,6 +8,9 @@ export default {
    ],
    theme: {
 	  extend: {
+			fontFamily: {
+				sans: ['Geist Sans', 'sans-serif']
+			},
 		 colors: {
 			secondary: '#AECACD',
 		 }
