@@ -1,7 +1,7 @@
 import Elysia, { t } from "elysia";
 import { swagger } from "@elysiajs/swagger";
 import { cors } from "@elysiajs/cors";
-import { database, getIdFromUsername } from "../appwrite";
+import { database, getIdFromUsername, logger } from "../appwrite";
 import { ID, Permission, Query, Role } from "node-appwrite";
 const app = new Elysia()
 	.use(swagger())
@@ -88,6 +88,7 @@ const app = new Elysia()
 	.get("/friends/remove/:username", async ({ params, headers, set }) => {
 		const friend = await getIdFromUsername(params.username);
 		const executor = headers["x-appwrite-user-id"];
+		logger.log("executor: " + executor ?? "null executor");
 		if (!friend) {
 			set.status = "Not Found";
 			return { message: "User not found" };

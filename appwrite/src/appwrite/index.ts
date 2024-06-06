@@ -17,3 +17,8 @@ export async function getIdFromUsername(username: string) {
 	}
 	return users.documents[0].$id;
 }
+
+export const logger = {
+	log: (message: Object | any[] | string | number) => {},
+	error: (message: Object | any[] | string | number) => {},
+};
