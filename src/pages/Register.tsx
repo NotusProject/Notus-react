@@ -1,20 +1,17 @@
 import {Input, InputGroup} from "../components/common/input.tsx";
 import {Field, Label} from "../components/common/fieldset.tsx";
-import {
-   EnvelopeIcon,
-   KeyIcon, UserIcon
-} from "@heroicons/react/24/solid";
+import {EnvelopeIcon, KeyIcon, UserIcon} from "@heroicons/react/24/solid";
 import {Checkbox, CheckboxField} from "../components/common/checkbox.tsx";
 import {Button} from "../components/common/button.tsx";
 import {account} from "../services/appwrite.ts";
 import {ID} from "appwrite";
 import {FormEvent, useRef} from "react";
-import {Link} from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 import Spline3D from "../components/layout/Spline3D.tsx";
 
 export default function Register() {
    const registerForm = useRef<HTMLFormElement>(null);
-   
+	const navigate = useNavigate();
    const handleRegistration = async (e: FormEvent<HTMLFormElement>) => {
 	  e.preventDefault();
 	  const name = registerForm.current?.username?.value;
@@ -30,6 +27,8 @@ export default function Register() {
 		 );
 		 console.log("Registration successful:", response);
 		 // Redirect or perform further actions upon successful registration
+			navigate('/');
+		
 	  } catch (error) {
 		 console.error("Registration failed:", error);
 		 // Handle registration errors appropriately
@@ -64,7 +63,7 @@ export default function Register() {
 					   <Label>Display Name</Label>
 					   <InputGroup>
 						  <UserIcon/>
-						  <Input name="usermame"
+							 <Input name="username"
 								 placeholder="JohnDoe"
 								 required={true}/>
 					   </InputGroup>

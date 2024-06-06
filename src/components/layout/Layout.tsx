@@ -62,14 +62,14 @@ function Layout({children}: { children: React.ReactNode }) {
                               <ServerDropdown/>
                               {/*Sidebar header items*/}
                               <SidebarSection className="max-lg:hidden">
-                                  <Tab>
+                                  <Tab as={Fragment}>
                                       <SidebarItem>
                                           <ArrowUturnLeftIcon/>
                                           <SidebarLabel>Back</SidebarLabel>
                                       </SidebarItem>
                                   </Tab>
                                   
-                                  <Tab>
+                                  <Tab as={Fragment}>
                                       <SidebarItem>
                                           <InboxIcon/>
                                           <SidebarLabel>Direct Messages</SidebarLabel>

@@ -1,16 +1,13 @@
+// ProtectedRoute.tsx
 import {Navigate, Outlet} from 'react-router-dom';
-import {useAuth} from '../hooks/useAuth.tsx';
-/* usage
-<ProtectedRoute>
-   <Component />
-</ProtectedRoute>
-*/
-export default function ProtectedRoute() {
-    const auth = useAuth();
+import {useAuth} from '../hooks/useAuth';
 
-    if (auth.loading) {
+export default function ProtectedRoute() {
+    const {user, loading} = useAuth();
+    
+    if (loading) {
         return <div>Loading</div>;
     }
-    console.log(auth);
-    return auth.user ? <Outlet/> : <Navigate to="/login"/>;
+    
+    return user ? <Outlet/> : <Navigate to="/login"/>;
 }

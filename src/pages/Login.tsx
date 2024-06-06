@@ -1,19 +1,16 @@
 import {Input, InputGroup} from "../components/common/input.tsx";
 import {Field, Label} from "../components/common/fieldset.tsx";
-import {
-   EnvelopeIcon,
-   KeyIcon
-} from "@heroicons/react/24/solid";
+import {EnvelopeIcon, KeyIcon} from "@heroicons/react/24/solid";
 import {Checkbox, CheckboxField} from "../components/common/checkbox.tsx";
 import {Button} from "../components/common/button.tsx";
-import {Link} from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 import {FormEvent, useRef} from "react";
 import {account} from "../services/appwrite.ts";
 import Spline3D from "../components/layout/Spline3D.tsx";
 
 export default function Login() {
    const loginForm = useRef<HTMLFormElement>(null);
-   
+	const navigate = useNavigate();
    const handleLogin = async (e: FormEvent<HTMLFormElement>) => {
 	  e.preventDefault();
 	  const email = loginForm.current?.email?.value as string;
@@ -23,6 +20,7 @@ export default function Login() {
 		 const response = await account.createEmailPasswordSession(email, password);
 		 console.log("User has been Logged In:", response);
 		 // Redirect or perform further actions upon successful login
+			navigate('/');
 	  } catch (error) {
 		 console.error("Login failed:", error);
 		 // Handle login errors appropriately

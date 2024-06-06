@@ -1,62 +1,28 @@
-import {createContext, ReactNode, useContext, useEffect, useState} from "react";
-import {Models} from "appwrite";
-import {account} from "../services/appwrite.ts";
+// useAuth.tsx
+import {useRecoilState} from 'recoil';
+import {account} from '../services/appwrite';
+import {useEffect} from 'react';
+import {loadingAtom, userAtom} from "../utils/atoms.ts";
 
-interface AuthContextValue {
-   user: Models.User<Models.Preferences> | null;
-   loading: boolean;
+export function useAuth() {
+	const [user, setUser] = useRecoilState(userAtom);
+	const [loading, setLoading] = useRecoilState(loadingAtom);
+	
+	useEffect(() => {
+		async function checkUserStatus() {
+			try {
+				const accountDetails = await account.get();
+				setUser(accountDetails);
+			} catch (error) {
+				console.error('Error checking user status:', error);
+				setUser(null); // Set user to null if there's an error
+			} finally {
+				setLoading(false);
+			}
+		}
+		
+		checkUserStatus();
+	}, [setUser, setLoading]);
+	
+	return {user, loading};
 }
-
-const AuthContext = createContext<AuthContextValue | undefined>(undefined);
-
-interface AuthProviderProps {
-   children: ReactNode;
-}
-
-export function AuthProvider({children}: AuthProviderProps) {
-   const [loading, setLoading] = useState(true);
-   const [user, setUser] = useState<Models.User<Models.Preferences> | null>(null);
-   
-   useEffect(() => {
-	  async function checkUserStatus() {
-		 try {
-			const accountDetails = await account.get();
-			setUser(accountDetails);
-		 } catch (error) {
-			console.error("Error checking user status:", error);
-		 } finally {
-			setLoading(false);
-		 }
-	  }
-	  
-	  checkUserStatus();
-	  console.log(user)
-   }, []);
-   
-   const contextData: AuthContextValue = {
-	  user,
-	  loading,
-   };
-   
-   return (
-	 <AuthContext.Provider value={contextData}>
-		<div className={'fixed top-10 left-5 text-red-500 font-bold'}>
-		   {loading ? "Loading..." : 'Logged in as ' + user?.name ? 'Logged in as ' + user?.email : 'Not logged in'}
-		</div>
-		{children}
-	 </AuthContext.Provider>
-   );
-}
-
-// Custom Hook
-export function useAuth(): AuthContextValue {
-   const context = useContext(AuthContext);
-   
-   if (!context) {
-	  throw new Error("useAuth must be used within an AuthProvider");
-   }
-   
-   return context;
-}
-
-export default AuthContext;
