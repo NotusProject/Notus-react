@@ -3,7 +3,12 @@ import { swagger } from "@elysiajs/swagger";
 import { cors } from "@elysiajs/cors";
 const app = new Elysia()
 	.use(swagger())
-	.use(cors())
+	.use(
+		cors({
+			credentials: true,
+			origin: "localhost:1420",
+		})
+	)
 	.get("/friends/add/:username", ({ params }) => {
 		const username = params.username;
 		return `Hello ${username}`;

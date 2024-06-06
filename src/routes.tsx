@@ -2,11 +2,22 @@ import React from "react";
 import { Route, Routes } from "react-router-dom";
 import ProtectedRoute from "./utils/ProtectedRoute.tsx";
 import FriendsPage from "./pages/Friends.tsx";
+import { api } from "./services/appwrite.ts";
 
 function Home() {
+	const [response, setResponse] = React.useState<string | null>(null);
+	async function fetchApi() {
+		const treaty = await api.friends.add({ username: "test" }).get();
+		const text = await treaty.response.text();
+		setResponse(text);
+	}
 	return (
 		<div className={"h-[999px]"}>
-			<div className={"h-96"}>z</div>
+			<div className={"h-96"}>
+				<p>Type safe example</p>
+				<p>{response ?? "No response"}</p>
+				<button onClick={fetchApi}>Click to Fetch API</button>
+			</div>
 			<div className={"h-96"}>dd</div>
 			<div className={"h-96"}>dd</div>
 			<div className={"h-96"}>dd</div>

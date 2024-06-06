@@ -11,6 +11,9 @@ importers:
       '@elysiajs/eden':
         specifier: ^1.0.14
         version: 1.0.14(elysia@1.0.22(@sinclair/typebox@0.32.31)(typescript@5.4.5))
+      '@fontsource/geist-sans':
+        specifier: ^5.0.3
+        version: 5.0.3
       '@headlessui/react':
         specifier: ^2.0.4
         version: 2.0.4(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
@@ -379,6 +382,9 @@ packages:
 
   '@floating-ui/utils@0.2.2':
     resolution: {integrity: sha512-J4yDIIthosAsRZ5CPYP/jQvUAQtlZTTD/4suA08/FEnlxqW3sKS9iAhgsa9VYLZ6vDHn/ixJgIqRQPotoBjxIw==}
+
+  '@fontsource/geist-sans@5.0.3':
+    resolution: {integrity: sha512-oGwoSIqNPMvjtCwj1lZaEr47MeiG27XPhypwkF643u1TQduvwbm3V3hYB01JekeaT34SAGP4I1h+WCdRpJkcwA==}
 
   '@headlessui/react@2.0.4':
     resolution: {integrity: sha512-16d/rOLeYsFsmPlRmXGu8DCBzrWD0zV1Ccx3n73wN87yFu8Y9+X04zflv8EJEt9TAYRyLKOmQXUnOnqQl6NgpA==}
@@ -1668,6 +1674,8 @@ snapshots:
       tabbable: 6.2.0
 
   '@floating-ui/utils@0.2.2': {}
+
+  '@fontsource/geist-sans@5.0.3': {}
 
   '@headlessui/react@2.0.4(react-dom@18.3.1(react@18.3.1))(react@18.3.1)':
     dependencies:
