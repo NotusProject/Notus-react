@@ -1,8 +1,7 @@
 import React from "react";
-import { Route, Routes } from "react-router-dom";
+import {Route, Routes} from "react-router-dom";
 import ProtectedRoute from "./utils/ProtectedRoute.tsx";
 import FriendsPage from "./pages/Friends.tsx";
-import { api } from "./services/appwrite.ts";
 
 function Home() {
 	return (
