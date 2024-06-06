@@ -38,6 +38,9 @@ importers:
       '@tauri-apps/plugin-shell':
         specifier: '>=2.0.0-beta.0'
         version: 2.0.0-beta.6
+      '@vynxc/appwrite-elysia-treaty':
+        specifier: ^1.0.4
+        version: 1.0.4(@elysiajs/eden@1.0.14(elysia@1.0.22(@sinclair/typebox@0.32.31)(typescript@5.4.5)))(appwrite@15.0.0)
       appwrite:
         specifier: ^15.0.0
         version: 15.0.0
@@ -694,6 +697,12 @@ packages:
     engines: {node: ^14.18.0 || >=16.0.0}
     peerDependencies:
       vite: ^4.2.0 || ^5.0.0
+
+  '@vynxc/appwrite-elysia-treaty@1.0.4':
+    resolution: {integrity: sha512-GMG30c07zkMpzx7KAB8mMKF7Qj8+vtssxKWLCQ5COI9s2EXspEA5sc1KsWnbFqIXMpQdnnJpwDoIml74P6djZw==}
+    peerDependencies:
+      '@elysiajs/eden': ^1.0.14
+      appwrite: ^15.0.0
 
   ansi-regex@5.0.1:
     resolution: {integrity: sha512-quJQXlTSUGL2LH9SUXo8VwsY4soanhgo6LNSm84E1LBcE8s3O0wpdiRzyR9z/ZZJMlMWv37qOOb9pdJlMUEKFQ==}
@@ -1956,6 +1965,11 @@ snapshots:
       vite: 5.2.12
     transitivePeerDependencies:
       - supports-color
+
+  '@vynxc/appwrite-elysia-treaty@1.0.4(@elysiajs/eden@1.0.14(elysia@1.0.22(@sinclair/typebox@0.32.31)(typescript@5.4.5)))(appwrite@15.0.0)':
+    dependencies:
+      '@elysiajs/eden': 1.0.14(elysia@1.0.22(@sinclair/typebox@0.32.31)(typescript@5.4.5))
+      appwrite: 15.0.0
 
   ansi-regex@5.0.1: {}
 
