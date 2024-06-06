@@ -7,9 +7,8 @@ import { api } from "./services/appwrite.ts";
 function Home() {
 	const [response, setResponse] = React.useState<string | null>(null);
 	async function fetchApi() {
-		const treaty = await api.friends.add({ username: "test" }).get();
-		const text = await treaty.data?.text();
-		setResponse(text ?? "No response from body");
+		const { data } = await api.friends.add({ username: "test" }).get();
+		setResponse(data);
 	}
 	return (
 		<div className={"h-[999px]"}>
