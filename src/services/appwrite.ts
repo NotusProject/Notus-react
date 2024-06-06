@@ -1,6 +1,6 @@
 import { Client, Account, Functions } from "appwrite";
-import { treaty } from "@vynxc/appwrite-elysia-treaty";
 import { App } from "../../appwrite/src/elysia";
+import { treaty } from "@vynxc/appwrite-elysia-treaty";
 
 const client = new Client()
 	.setEndpoint("https://appwrite.wasimhub.dev/v1")

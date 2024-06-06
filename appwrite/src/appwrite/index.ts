@@ -1,4 +1,4 @@
-import { Client, Databases } from "node-appwrite";
+import { Client, Databases, Query } from "node-appwrite";
 
 export const apiKey = Bun.env["APPWRITE_API_KEY"]!;
 export const client = new Client()
@@ -7,3 +7,13 @@ export const client = new Client()
 	.setKey(apiKey);
 
 export const database = new Databases(client);
+
+export async function getIdFromUsername(username: string) {
+	const users = await database.listDocuments("default", "users", [
+		Query.equal("username", username),
+	]);
+	if (users.documents.length === 0) {
+		return null;
+	}
+	return users.documents[0].$id;
+}
