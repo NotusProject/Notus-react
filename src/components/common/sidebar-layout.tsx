@@ -103,7 +103,7 @@ export function SidebarLayout({
 		<main
 			className="flex flex-1  flex-col pb-2 lg:min-w-0 lg:pl-64 lg:pr-2 lg:pt-2">
 		   <div
-			   className="grow overflow-y-auto  p-6 lg:rounded-lg lg:bg-white lg:p-10 lg:shadow-sm lg:ring-1 lg:ring-zinc-950/5 dark:lg:bg-zinc-900 dark:lg:ring-white/10">
+					className="grow overflow-y-auto  py-4 !px-2 lg:rounded-lg lg:bg-white lg:p-10 lg:shadow-sm lg:ring-1 lg:ring-zinc-950/5 dark:lg:bg-zinc-900 dark:lg:ring-white/10">
 			   {/* *mx-auto*/}
 				 <div className="min-h-dvh mx-auto max-w-6xl">{children}</div>
 		   </div>

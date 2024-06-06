@@ -134,8 +134,8 @@ export const SidebarItem = React.forwardRef(function SidebarItem(
 	 'dark:data-[active]:bg-white/5 dark:data-[slot=icon]:*:data-[active]:fill-white',
 	 'dark:data-[slot=icon]:*:data-[current]:fill-white'
    )
-
-   return (
+	
+	return (
 	 <span className={clsx(className, 'relative')}>
       {isCurrent && (
 		<motion.span
@@ -153,7 +153,7 @@ export const SidebarItem = React.forwardRef(function SidebarItem(
 		) : (
 		  <Headless.Button
 			{...props}
-			className={clsx('cursor-default', classes)}
+			className={clsx('cursor-pointer', classes)}
 			data-current={isCurrent ? 'true' : undefined}
 			ref={ref}
 		  >

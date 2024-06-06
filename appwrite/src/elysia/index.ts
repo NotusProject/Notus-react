@@ -1,6 +1,7 @@
-import Elysia, { t } from "elysia";
-import { swagger } from "@elysiajs/swagger";
-import { cors } from "@elysiajs/cors";
+import Elysia, {t} from "elysia";
+import {swagger} from "@elysiajs/swagger";
+import {cors} from "@elysiajs/cors";
+
 const app = new Elysia()
 	.use(swagger())
 	.use(
@@ -11,6 +12,9 @@ const app = new Elysia()
 	)
 	.get("/friends/add/:username", ({ params }) => `Hello ${params.username}`, {
 		response: t.String(),
-	});
+	})
+	 .get("/friends/delete/:username", ({params}) => `Hello ${params}`, {
+		 response: t.String(),
+	 })
 export default app;
 export type App = typeof app;
