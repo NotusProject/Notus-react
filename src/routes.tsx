@@ -8,8 +8,8 @@ function Home() {
 	const [response, setResponse] = React.useState<string | null>(null);
 	async function fetchApi() {
 		const treaty = await api.friends.add({ username: "test" }).get();
-		const text = await treaty.response.text();
-		setResponse(text);
+		const text = await treaty.data?.text();
+		setResponse(text ?? "No response from body");
 	}
 	return (
 		<div className={"h-[999px]"}>
