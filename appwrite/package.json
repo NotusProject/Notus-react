@@ -9,6 +9,7 @@
 		"typescript": "^5.0.0"
 	},
 	"dependencies": {
+		"@elysiajs/cors": "^1.0.2",
 		"@elysiajs/swagger": "^1.0.5",
 		"@vynxc/appwrite-utils": "^1.0.2",
 		"elysia": "^1.0.22"
