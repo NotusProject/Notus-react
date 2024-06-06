@@ -11,8 +11,9 @@ const app = new Elysia()
 			origin: "localhost:1420",
 		})
 	)
+	.get("/", () => "Hello World")
 	.get(
-		"/friends/request/:username",
+		"friends/request/:username",
 		async ({ params, headers, set }) => {
 			const executor = headers["x-appwrite-user-id"];
 			const friend = await getIdFromUsername(params.username);
@@ -49,7 +50,7 @@ const app = new Elysia()
 		}
 	)
 	.get(
-		"/friends/accept/:username",
+		"friends/accept/:username",
 		async ({ params, headers, set }) => {
 			const friend = await getIdFromUsername(params.username);
 			const executor = headers["x-appwrite-user-id"];
@@ -85,7 +86,7 @@ const app = new Elysia()
 			response: t.Object({ message: t.String() }),
 		}
 	)
-	.get("/friends/remove/:username", async ({ params, headers, set }) => {
+	.get("friends/remove/:username", async ({ params, headers, set }) => {
 		const friend = await getIdFromUsername(params.username);
 		const executor = headers["x-appwrite-user-id"];
 		logger.log("executor: " + executor ?? "null executor");

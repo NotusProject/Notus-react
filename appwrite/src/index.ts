@@ -10,23 +10,22 @@ import eventHandler from "./events";
 import { logger } from "./appwrite";
 
 export default async function server(ctx: Context): Promise<Response> {
-	return ctx.res.json({ message: "Hello World" });
-	// logger.log = ctx.log;
-	// logger.error = ctx.log;
-	// try {
-	// 	const eventrsp = await eventHandler.pipe(ctx);
-	// 	if (eventrsp) {
-	// 		return eventrsp;
-	// 	}
-	// 	const request = toRequest(ctx.req);
-	// 	const honoResposne = await app.handle(request);
-	// 	return await toResponse(honoResposne);
-	// } catch (e) {
-	// 	if (e instanceof Error) {
-	// 		logger.error(e.message);
-	// 	}
-	// 	logger.error("Unhandled error");
+	logger.log = ctx.log;
+	logger.error = ctx.log;
+	try {
+		const eventrsp = await eventHandler.pipe(ctx);
+		if (eventrsp) {
+			return eventrsp;
+		}
+		const request = toRequest(ctx.req);
+		const honoResposne = await app.handle(request);
+		return await toResponse(honoResposne);
+	} catch (e) {
+		if (e instanceof Error) {
+			logger.error(e.message);
+		}
+		logger.error("Unhandled error");
 
-	// 	return await toResponse(Response.error());
-	// }
+		return await toResponse(Response.error());
+	}
 }
