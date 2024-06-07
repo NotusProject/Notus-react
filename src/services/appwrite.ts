@@ -7,7 +7,7 @@ const client = new Client()
 	.setProject("notus");
 const functions = new Functions(client);
 
-const api = treaty<App>(functions, "6660df2a00211037c8c4");
+const api = treaty<App>(functions, "666260770026f0c55ce6");
 
 const account = new Account(client);
 

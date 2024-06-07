@@ -12,6 +12,7 @@ import { logger } from "./appwrite";
 export default async function server(ctx: Context): Promise<Response> {
 	logger.log = ctx.log;
 	logger.error = ctx.error;
+	ctx.log(ctx.req.headers);
 	try {
 		const eventrsp = await eventHandler.pipe(ctx);
 		if (eventrsp) {
@@ -24,7 +25,7 @@ export default async function server(ctx: Context): Promise<Response> {
 		if (e instanceof Error) {
 			logger.error(e.message);
 		}
-		logger.error("Unhandled error");
+		ctx.error("Unhandled error");
 
 		return ctx.res.json({ message: "Unhandled error" }, 500);
 	}
