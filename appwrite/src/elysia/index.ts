@@ -14,8 +14,10 @@ const app = new Elysia()
 	.get("/", () => "Hello World")
 	.get(
 		"friends/request/:username",
-		async ({ params, headers, set }) => {
-			const executor = headers["x-appwrite-user-id"];
+		async ({ params, headers, set, request }) => {
+			logger.log(request.headers);
+			logger.log(headers);
+			const executor = request.headers.get("x-appwrite-user-id");
 			logger.log("executor: " + executor ?? "null executor");
 			const friend = await getIdFromUsername(params.username);
 			logger.log("friend: " + friend ?? "null friend");
