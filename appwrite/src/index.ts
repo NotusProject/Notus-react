@@ -19,11 +19,13 @@ export default async function server(ctx: Context): Promise<Response> {
 			return eventrsp;
 		}
 		const request = toRequest(ctx.req);
+		logger.log("request: " + JSON.stringify(request));
 		const honoResposne = await app.handle(request);
+		logger.log("response: " + JSON.stringify(honoResposne));
 		return await toResponse(honoResposne);
 	} catch (e) {
 		if (e instanceof Error) {
-			logger.error(e.message);
+			ctx.error(e.message);
 		}
 		ctx.error("Unhandled error");
 
