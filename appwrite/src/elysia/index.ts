@@ -16,23 +16,25 @@ const app = new Elysia()
 		"friends/request/:username",
 		async ({ params, headers, set }) => {
 			const executor = headers["x-appwrite-user-id"];
+			logger.log("executor: " + executor ?? "null executor");
 			const friend = await getIdFromUsername(params.username);
-
+			logger.log("friend: " + friend ?? "null friend");
 			const write = (id: string) => Permission.write(Role.user(id));
 			if (!friend || !executor) {
 				set.status = "Not Found";
 				return { message: "User not found" };
 			}
+			logger.log("friend: " + friend ?? "null friend");
 			// Check if user is already a friend
 			const friendRequest = await database.listDocuments("default", "friends", [
 				Query.equal("user", executor),
 				Query.equal("friend", friend),
 			]);
+			logger.log("friendRequest: " + friendRequest.documents.length);
 			if (friendRequest.documents.length > 0) {
 				set.status = "Bad Request";
 				return { message: "User is already a friend" };
 			}
-
 			await database.createDocument(
 				"default",
 				"friends",
@@ -43,6 +45,8 @@ const app = new Elysia()
 				},
 				[write(executor), write(friend)]
 			);
+			logger.log("Friend request sent");
+
 			return { message: "Friend request sent" };
 		},
 		{
