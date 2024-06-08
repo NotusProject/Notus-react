@@ -10,8 +10,8 @@ import eventHandler from "./events";
 import { logger } from "./appwrite";
 
 export default async function server(ctx: Context): Promise<Response> {
-	logger.log = ctx.log;
-	logger.error = ctx.error;
+	logger.log_internal = ctx.log;
+	logger.error_internal = ctx.error;
 
 	try {
 		const eventrsp = await eventHandler.pipe(ctx);
