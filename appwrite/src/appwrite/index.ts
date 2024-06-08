@@ -1,4 +1,4 @@
-import { Client, Databases, Query } from "node-appwrite";
+import { Client, Databases, Permission, Query, Role } from "node-appwrite";
 
 export const apiKey = Bun.env["APPWRITE_API_KEY"]!;
 export const client = new Client()
@@ -19,6 +19,22 @@ export async function getIdFromUsername(username: string) {
 }
 
 export const logger = {
-	log: (message: Object | any[] | string | number) => {},
-	error: (message: Object | any[] | string | number) => {},
+	log: (message: Object | any[] | string | number) => {
+		if (message instanceof Object || typeof message === "object") {
+			logger.log_internal(JSON.stringify(message));
+			return;
+		} else if (typeof message === "string" || typeof message === "number") {
+			logger.log_internal(message);
+		}
+	},
+	error: (message: Object | any[] | string | number) => {
+		if (message instanceof Object || typeof message === "object") {
+			logger.error_internal(JSON.stringify(message));
+			return;
+		} else if (typeof message === "string" || typeof message === "number") {
+			logger.error_internal(message);
+		}
+	},
+	log_internal: (message: Object | any[] | string | number) => {},
+	error_internal: (message: Object | any[] | string | number) => {},
 };
