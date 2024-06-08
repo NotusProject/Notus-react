@@ -18,9 +18,10 @@ export const friends = new Elysia({ prefix: "friends" })
 				return { message: "User cannot be friend with themselves" };
 			}
 
-			const write = (id: string) => Permission.write(Role.user(id));
-			const read = (id: string) => Permission.read(Role.user(id));
-			const readWrite = (id: string) => [read(id), write(id)];
+			const readWrite = (id: string) => [
+				Permission.write(Role.user(id)),
+				Permission.read(Role.user(id)),
+			];
 			if (!friend || !executor) {
 				set.status = "Not Found";
 				return { message: "User not found" };
