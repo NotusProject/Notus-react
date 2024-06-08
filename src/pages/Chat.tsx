@@ -1,11 +1,14 @@
 import {Navbar, NavbarItem, NavbarSection, NavbarSpacer} from "../components/common/navbar.tsx";
 import {Button} from "../components/common/button.tsx";
 import {
+	EllipsisVerticalIcon,
 	MagnifyingGlassIcon,
 	MicrophoneIcon,
 	PaperAirplaneIcon,
 	PaperClipIcon,
+	PencilIcon,
 	PhoneIcon,
+	TrashIcon,
 	VideoCameraIcon
 } from "@heroicons/react/20/solid";
 import {Avatar} from "../components/common/avatar.tsx";
@@ -39,13 +42,12 @@ export function Chat() {
 	return (
 		 <section className="h-screen grid grid-rows-[auto_1fr_auto] pb-7">
 			 <UserActionBar/>
-			 <div className="overflow-y-auto p-4  ">
+			 <div className="overflow-y-auto py-4  ">
 				 {/* Chat content goes here */}
-				 <div className="bg-gray-100 p-2 rounded mb-2">User message 1</div>
-				 <div className="bg-blue-100 p-2 rounded mb-2">User message 2</div>
 				 {/* Add more chat messages */}
+				 <Message/>
 			 </div>
-			 <div className="p-6 px-2 border">
+			 <div className="p-6 px-2 ">
 				 <Textarea
 						rows={textareaRows}
 						className="group"
@@ -71,6 +73,43 @@ export function Chat() {
 			 </div>
 		 </section>
 	);
+}
+
+/**
+ * v0 by Vercel.
+ * @see https://v0.dev/t/n74y60nxd0B
+ * Documentation: https://v0.dev/docs#integrating-generated-code-into-your-nextjs-app
+ */
+
+export default function Message() {
+	return (
+		 <div className="flex items-start gap-4 w-full px-2  group py-2 hover:bg-zinc-800/30 rounded-md relative">
+			 <Avatar initials={"vy"} className="!size-8">
+			 </Avatar>
+			 <div className="flex-1 space-y-1">
+				 <div className="flex items-center gap-4 relative">
+					 <div className="font-medium">Olivia Davis</div>
+					 <div className="text-xs text-gray-500 dark:text-gray-400">Oct 08, 2023 9:15 AM</div>
+				 
+				 </div>
+				 <section
+						className="group-hover:flex items-center hidden gap-2  absolute right-0 -top-4 bg-zinc-900 rounded-lg border border-zinc-800 p-1 ">
+					 <Button plain={true} className="!py-0">
+						 <PencilIcon className="!size-4 fill-white"/>
+					 </Button> <Button plain={true} className="!py-0">
+					 <TrashIcon className="!size-4 fill-red-600"/>
+				 </Button> <Button plain={true} className="!py-0">
+					 <EllipsisVerticalIcon className="!size-4 fill-white"/>
+				 </Button>
+				 </section>
+				 <div className="text-sm text-gray-700 dark:text-gray-300 leading-normal">
+					 Hi there! I just wanted to follow up on our previous discussion about the project timeline. I've been
+					 reviewing the details and have a few ideas I'd like to share. Let me know if you have any availability this
+					 week to chat.
+				 </div>
+			 </div>
+		 </div>
+	)
 }
 
 function UserActionBar() {
