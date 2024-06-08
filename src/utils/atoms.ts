@@ -27,6 +27,8 @@ export const friendsAtom = selector({
 		}
 
 		const friendDocuments = await database.listDocuments("default", "friends");
+		console.log(friendDocuments.documents);
+
 		const ids = friendDocuments.documents.map((doc) => {
 			return doc.friend !== user.$id ? doc.friend : doc.user;
 		}) as string[];
