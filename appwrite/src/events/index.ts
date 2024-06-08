@@ -15,19 +15,17 @@ eventHandler.on("users.*.create", async (event, { log, req, res }) => {
 	const data = req.body as Models.User<Models.Preferences>;
 	const avatar = `https://api.dicebear.com/8.x/bottts-neutral/png?seed=${data.name}&backgroundColor=b6e3f4,c0aede,d1d4f9`;
 	const model: User = {
-		id: data.$id,
 		username: data.name,
 		avatar,
 	};
 
-	await database.createDocument("default", "users", ID.unique(), model);
+	await database.createDocument("default", "users", data.$id, model);
 	return res.json({ message: "User created" });
 });
 
 export default eventHandler;
 
 interface User {
-	id: string;
 	username: string;
 	avatar: string;
 }

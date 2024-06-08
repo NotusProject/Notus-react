@@ -15,7 +15,7 @@ export async function getIdFromUsername(username: string) {
 	if (users.documents.length === 0) {
 		return null;
 	}
-	return users.documents[0].id;
+	return users.documents[0].$id;
 }
 
 export const logger = {

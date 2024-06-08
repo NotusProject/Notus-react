@@ -44,13 +44,13 @@ export const friendsAtom = selector({
 		if (ids.length === 0) {
 			return { friends: [], requests: [] };
 		}
-		let userQuery = Query.equal("id", ids);
+		let userQuery = Query.equal("$id", ids);
 
 		const all = await database.listDocuments("default", "users", [userQuery]);
 		console.log(all);
 
-		const friends = all.documents.filter((doc) => accepted.includes(doc.id));
-		const requests = all.documents.filter((doc) => pending.includes(doc.id));
+		const friends = all.documents.filter((doc) => accepted.includes(doc.$id));
+		const requests = all.documents.filter((doc) => pending.includes(doc.$id));
 
 		return { friends, requests };
 	},
