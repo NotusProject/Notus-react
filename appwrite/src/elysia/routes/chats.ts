@@ -10,7 +10,8 @@ export const chats = new Elysia({ prefix: "chats" })
 	.get("/user/:username", async ({ params, request, set }) => {
 		const executor = request.headers.get("x-appwrite-user-id");
 		const friend = await getIdFromUsername(params.username);
-
+		logger.log(friend ?? "null");
+		logger.log(executor ?? "null");
 		if (friend === executor || friend === null || executor === null) {
 			set.status = "Bad Request";
 			return {
@@ -18,6 +19,7 @@ export const chats = new Elysia({ prefix: "chats" })
 			};
 		}
 		const chat = await createChat(executor, [executor, friend]);
+		logger.log(chat);
 		return { message: chat };
 	})
 	.get("/group/:id", () => {

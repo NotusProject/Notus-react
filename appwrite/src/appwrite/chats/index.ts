@@ -1,5 +1,5 @@
 import { ID, Permission, Query, Role } from "node-appwrite";
-import { database } from "../index";
+import { database, logger } from "../index";
 
 export async function getChats(requestorId: string) {
 	const chats = await database.listDocuments("default", "chats", [
@@ -28,7 +28,7 @@ export async function createChat(
 		Query.equal("status", "ACCEPTED"),
 		Query.and(ors),
 	]);
-
+	logger.log(friend.documents);
 	if (friend.documents.length !== users.length - 1) return false;
 
 	const read = users.map((user) => [
@@ -37,7 +37,8 @@ export async function createChat(
 	]);
 
 	const permissions = [...read.flat()];
-
+	logger.log("permissions");
+	logger.log(permissions);
 	return await database.createDocument(
 		"default",
 		"chats",
@@ -45,6 +46,7 @@ export async function createChat(
 		{
 			users,
 			title,
+			type: "DIRECT",
 		},
 		permissions
 	);
