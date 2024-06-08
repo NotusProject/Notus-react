@@ -5,7 +5,6 @@ import {Button} from "../../common/button.tsx";
 import {ChatBubbleLeftIcon} from "@heroicons/react/20/solid";
 import {Dropdown, DropdownButton, DropdownItem, DropdownMenu} from "../../common/dropdown.tsx";
 import {EllipsisHorizontalIcon} from "@heroicons/react/24/solid";
-import {User} from "../../../utils/types/types.ts";
 
 /**
  * Represents a user.
@@ -25,7 +24,8 @@ import {User} from "../../../utils/types/types.ts";
  *
  * @return {JSX.Element} The rendered table of users.
  */
-export default function UsersTable({users}: { users: User[] }) {
+export default function UsersTable({users}: { users: any }) {
+	console.log(users);
 	return (
 		 <Table className="[--gutter:theme(spacing.6)] sm:[--gutter:theme(spacing.8)]">
 			 <TableHead>
@@ -36,13 +36,13 @@ export default function UsersTable({users}: { users: User[] }) {
 				 </TableRow>
 			 </TableHead>
 			 <TableBody>
-				 {users.map((user) => (
-						<TableRow key={user.displayName}>
+				 {users.map((user, index) => (
+						<TableRow key={user.username}>
 							<TableCell>
 								<div className="flex items-center gap-4">
-									<Avatar src={user.avatarUrl} className="size-12"/>
+									<Avatar src={user.avatar} className="size-12"/>
 									<div>
-										<div className="font-medium">{user.displayName}</div>
+										<div className="font-medium">{user.username}</div>
 										<div className="text-zinc-500">
 											<a href="#" className="hover:text-zinc-700">
 												{user.bio}
@@ -53,7 +53,7 @@ export default function UsersTable({users}: { users: User[] }) {
 							</TableCell>
 							
 							<TableCell>
-								{user.online ? <Badge color="lime">Online</Badge> : <Badge color="zinc">Offline</Badge>}
+								{user.status === 'ONLINE' ? <Badge color="lime">Online</Badge> : <Badge color="zinc">Offline</Badge>}
 							</TableCell>
 							<TableCell className="text-zinc-500 space-x-2 flex justify-end">
 								<div className="-mx-3 my-1.5 sm:-mx-2.5 flex gap-4">

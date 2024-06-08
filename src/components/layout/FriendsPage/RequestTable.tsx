@@ -1,25 +1,25 @@
 import {Table, TableBody, TableCell, TableHead, TableHeader, TableRow} from "../../common/table.tsx";
 import {Avatar} from "../../common/avatar.tsx";
 import {Button} from "../../common/button.tsx";
-import {User} from "../../../utils/types/types.ts";
 
-export default function RequestTable({users}: { users: User[] }) {
+export default function RequestTable({users}: { users: any }) {
+	console.log(users);
 	return (
 		 <Table className="[--gutter:theme(spacing.6)] sm:[--gutter:theme(spacing.8)]">
 			 <TableHead>
 				 <TableRow>
-					 <TableHeader>Friend Request - 10</TableHeader>
+					 <TableHeader>Friend Request - {users.length}</TableHeader>
 					 <TableHeader></TableHeader>
 				 </TableRow>
 			 </TableHead>
 			 <TableBody>
 				 {users.map((user) => (
-						<TableRow key={user.displayName}>
+						<TableRow key={user.$id}>
 							<TableCell>
 								<div className="flex items-center gap-4">
-									<Avatar src={user.avatarUrl} className="size-12"/>
+									<Avatar src={user.avatar} className="size-12"/>
 									<div>
-										<div className="font-medium">{user.displayName}</div>
+										<div className="font-medium">{user.username}</div>
 										<div className="text-zinc-500">
 											<a href="#" className="hover:text-zinc-700">
 												{user.bio}

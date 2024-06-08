@@ -17,20 +17,43 @@ export const loadingAtom = atom<boolean>({
 	key: 'loading',
 	default: true,
 });
-
+// todo maybe split it for cleaner look
 export const friendsAtom = selector({
 	key: 'friends',
 	get: async ({get}) => {
 		const user = get(userAtom);
 		if (!user) {
 			console.log('No user found');
-			return [];
+			return {friends: [], requests: []};
 		}
-		const friends = await database.listDocuments('default', 'friends', [
-			Query.equal('user', user.$id),
-			Query.equal('status', 'ACCEPTED'),
-		]);
 		
-		return friends.documents;
+		const friendDocuments = await database.listDocuments('default', 'friends');
+		const friendRequests = friendDocuments.documents.filter(
+			 (doc) => doc.status === 'PENDING'
+		);
+		const acceptedFriends = friendDocuments.documents.filter(
+			 (doc) => doc.status === 'ACCEPTED'
+		);
+		const friendIds = acceptedFriends.map((doc) => {
+			return doc.friend !== user.$id ? doc.friend : doc.user;
+		});
+		let userQuery = '';
+		if (friendIds.length === 0) {
+			return {friends: [], requests: friendRequests};
+		}
+		
+		if (friendIds.length === 1) {
+			userQuery = Query.equal('$id', friendIds[0]);
+		} else {
+			const equalQueries = friendIds.map((id) => Query.equal('$id', id));
+			userQuery = Query.or(equalQueries);
+		}
+		
+		const friends = await database.listDocuments('default', 'users', [
+			userQuery,
+		]);
+		console.log(friends);
+		console.log(friendRequests);
+		return {friends: friends.documents, requests: friendRequests};
 	},
 });

@@ -23,9 +23,8 @@ function classNames(...classes: string[]) {
 export default function FriendsTab() {
 	const [selectedIndex, setSelectedIndex] = useState(0);
 	const friends = useRecoilValue(friendsAtom);
-	console.log(friends);
+
 	return (
-		 <React.Suspense fallback={<div>Loading...</div>}>
 		 <>
 			 <TabGroup selectedIndex={selectedIndex} onChange={setSelectedIndex}>
 				 <div className="border-b border-zinc-200 dark:border-zinc-700">
@@ -97,7 +96,7 @@ export default function FriendsTab() {
 								 <Input name="search" placeholder="Search&hellip;" aria-label="Search"/>
 							 </InputGroup>
 							 <div className="mt-4 text-zinc-500 dark:text-zinc-400">
-								 <UsersTable users={users}/>
+								 <UsersTable users={friends.friends}/>
 							 </div>
 						 </section>
 					 </TabPanel>
@@ -109,13 +108,13 @@ export default function FriendsTab() {
 								 <Input name="search" placeholder="Search&hellip;" aria-label="Search"/>
 							 </InputGroup>
 							 <div className="mt-4 text-zinc-500 dark:text-zinc-400">
-								 <UsersTable users={users}/>
+								 <UsersTable users={friends.friends}/>
 							 </div>
 						 </section>
 					 </TabPanel>
 					 {/*  Tab 3*/}
 					 <TabPanel>
-						 <RequestTable users={users}/>
+						 <RequestTable users={friends.requests}/>
 					 
 					 </TabPanel>
 					 {/*  Tab 4*/}
@@ -125,24 +124,8 @@ export default function FriendsTab() {
 				 </TabPanels>
 			 </TabGroup>
 		 </>
-		 </React.Suspense>
 	);
 }
-const users = [
-	{
-		avatarUrl: 'https://cdn.discordapp.com/avatars/1226135412150505503/82a7ade64cd1bcc587db63be016376a0?size=1024',
-		displayName: 'Mugi',
-		bio: 'Do Not Disturb',
-		online: true
-	},
-	{
-		avatarUrl: 'https://cdn.discordapp.com/avatars/911937892471959552/74d64ab57643aefc6b42276d36b88a77?size=1024',
-		displayName: 'Vynxc',
-		bio: 'Do Not Disturb',
-		online: false
-	},
-]
-
 
 
 
