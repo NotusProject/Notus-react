@@ -26,8 +26,9 @@ export async function createChat(
 
 	const friend = await database.listDocuments("default", "friends", [
 		Query.equal("status", "ACCEPTED"),
-		Query.and(ors),
+		Query.or(ors),
 	]);
+	logger.log(ors);
 	logger.log(friend.documents);
 	if (friend.documents.length !== users.length - 1) return false;
 
