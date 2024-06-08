@@ -1,12 +1,14 @@
 import {Tab, TabGroup, TabList, TabPanel, TabPanels} from "@headlessui/react";
 import {motion} from "framer-motion";
-import {useState} from "react";
+import React, {Fragment, useState} from "react";
 import {Button} from "../components/common/button.tsx";
 import {Input, InputGroup} from "../components/common/input.tsx";
 import {MagnifyingGlassIcon} from "@heroicons/react/20/solid";
 import UsersTable from "../components/layout/FriendsPage/UsersTable.tsx";
 import RequestTable from "../components/layout/FriendsPage/RequestTable.tsx";
 import {AddFriends} from "../components/layout/FriendsPage/AddFriends.tsx";
+import {friendsAtom} from "../utils/atoms.ts";
+import {useRecoilValue} from "recoil";
 
 const tabs = [
 	{name: "Online", current: true},
@@ -20,8 +22,10 @@ function classNames(...classes: string[]) {
 
 export default function FriendsTab() {
 	const [selectedIndex, setSelectedIndex] = useState(0);
-	
+	const friends = useRecoilValue(friendsAtom);
+	console.log(friends);
 	return (
+		 <React.Suspense fallback={<div>Loading...</div>}>
 		 <>
 			 <TabGroup selectedIndex={selectedIndex} onChange={setSelectedIndex}>
 				 <div className="border-b border-zinc-200 dark:border-zinc-700">
@@ -74,7 +78,7 @@ export default function FriendsTab() {
 										</Tab>
 								 ))}
 								 <Tab
-								 
+										as={Fragment}
 								 >
 									 <Button color="violet" className="!mb-3 !py-0">Add Friend</Button>
 								 
@@ -121,6 +125,7 @@ export default function FriendsTab() {
 				 </TabPanels>
 			 </TabGroup>
 		 </>
+		 </React.Suspense>
 	);
 }
 const users = [
