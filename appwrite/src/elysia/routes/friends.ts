@@ -3,7 +3,10 @@ import { Permission, Role, Query, ID } from "node-appwrite";
 import { getIdFromUsername, database, logger } from "../../appwrite";
 
 export const friends = new Elysia({ prefix: "friends" })
-
+	.onError((error) => {
+		logger.error(error);
+		return { message: "Internal server error" };
+	})
 	.get(
 		"/request/:username",
 		async ({ params, set, request }) => {
@@ -72,6 +75,16 @@ export const friends = new Elysia({ prefix: "friends" })
 				set.status = "Not Found";
 				return { message: "User is not a friend" };
 			}
+			const friendRequest = friendDocument.documents[0];
+			if (friendRequest.status === "ACCEPTED") {
+				set.status = "Bad Request";
+				return { message: "User is already a friend" };
+			}
+			if (friendRequest.user !== executor) {
+				set.status = "Bad Request";
+				return { message: "Cannot accept friend request for another user" };
+			}
+
 			await database.updateDocument(
 				"default",
 				"friends",
@@ -86,7 +99,7 @@ export const friends = new Elysia({ prefix: "friends" })
 			response: t.Object({ message: t.String() }),
 		}
 	)
-	.get("/remove/:username", async ({ params, headers, set }) => {
+	.get("/reject/:username", async ({ params, headers, set }) => {
 		const friend = await getIdFromUsername(params.username);
 		const executor = headers["x-appwrite-user-id"];
 		logger.log("executor: " + executor ?? "null executor");
