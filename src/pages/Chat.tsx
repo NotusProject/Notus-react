@@ -23,7 +23,7 @@ export function Chat() {
 	useEffect(() => {
 		const textarea = textareaRef.current;
 		if (textarea) {
-			const handleInput = (e) => {
+			const handleInput = (e: Event) => {
 				e.preventDefault();
 				const maxRows = 6;
 				const rows = Math.min(
@@ -45,6 +45,14 @@ export function Chat() {
 			 <div className="overflow-y-auto py-4  ">
 				 {/* Chat content goes here */}
 				 {/* Add more chat messages */}
+				 <Message/>
+				 <Message/>
+				 <Message/>
+				 <Message/>
+				 <Message/>
+				 <Message/>
+				 <Message/>
+				 <Message/>
 				 <Message/>
 			 </div>
 			 <div className="p-6 px-2 ">

@@ -2,7 +2,7 @@ import {Table, TableBody, TableCell, TableHead, TableHeader, TableRow} from "../
 import {Avatar} from "../../common/avatar.tsx";
 import {Button} from "../../common/button.tsx";
 
-export default function RequestTable({users}: { users: any }) {
+export default function RequestTable({users}: { users: any[] }) {
 	console.log(users);
 	return (
 		 <Table className="[--gutter:theme(spacing.6)] sm:[--gutter:theme(spacing.8)]">

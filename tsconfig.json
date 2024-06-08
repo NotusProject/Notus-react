@@ -25,6 +25,10 @@
   "include": [
 	"src"
   ],
+	"exclude": [
+		"src-tauri",
+		"appwrite"
+	],
   "references": [
 	{
 	  "path": "./tsconfig.node.json"

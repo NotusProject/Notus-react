@@ -24,7 +24,7 @@ import {EllipsisHorizontalIcon} from "@heroicons/react/24/solid";
  *
  * @return {JSX.Element} The rendered table of users.
  */
-export default function UsersTable({users}: { users: any }) {
+export default function UsersTable({users}: { users: any[] }) {
 	console.log(users);
 	return (
 		 <Table className="[--gutter:theme(spacing.6)] sm:[--gutter:theme(spacing.8)]">
@@ -36,7 +36,7 @@ export default function UsersTable({users}: { users: any }) {
 				 </TableRow>
 			 </TableHead>
 			 <TableBody>
-				 {users.map((user, index) => (
+				 {users.map((user) => (
 						<TableRow key={user.username}>
 							<TableCell>
 								<div className="flex items-center gap-4">

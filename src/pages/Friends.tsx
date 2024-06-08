@@ -1,6 +1,6 @@
 import {Tab, TabGroup, TabList, TabPanel, TabPanels} from "@headlessui/react";
 import {motion} from "framer-motion";
-import React, {Fragment, useState} from "react";
+import {Fragment, useState} from "react";
 import {Button} from "../components/common/button.tsx";
 import {Input, InputGroup} from "../components/common/input.tsx";
 import {MagnifyingGlassIcon} from "@heroicons/react/20/solid";
