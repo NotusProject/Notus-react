@@ -2,6 +2,7 @@ import React, {Suspense} from "react";
 import {Route, Routes} from "react-router-dom";
 import ProtectedRoute from "./utils/ProtectedRoute.tsx";
 import FriendsPage from "./pages/Friends.tsx";
+import {Chat} from "./pages/Chat.tsx";
 
 function Home() {
 	return (
@@ -22,6 +23,7 @@ const AppRoutes: React.FC = () => {
 		<Routes>
 			<Route element={<ProtectedRoute />}>
 				<Route path="/" element={<Home />} />
+				<Route path="/chat" element={<Chat/>}/>
 				
 				<Route path="/friends" element={
 					<Suspense fallback={<div>Loading...</div>}>

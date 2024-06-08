@@ -6,10 +6,12 @@ export const Textarea = forwardRef(function Textarea(
   {
 	 className,
 	 resizable = true,
+		children,
 	 ...props
   }: {
 	 className?: string;
-	 resizable?: boolean
+		resizable?: boolean;
+		children?: React.ReactNode;
   } & Omit<Headless.TextareaProps, 'className'>,
   ref: React.ForwardedRef<HTMLTextAreaElement>
 ) {
@@ -30,12 +32,13 @@ export const Textarea = forwardRef(function Textarea(
 		  'has-[[data-disabled]]:opacity-50 before:has-[[data-disabled]]:bg-zinc-950/5 before:has-[[data-disabled]]:shadow-none',
 	   ])}
 	 >
+		 {children}
       <Headless.Textarea
 		ref={ref}
 		{...props}
 		className={clsx([
 		   // Basic layout
-		   'relative block h-full w-full appearance-none rounded-lg px-[calc(theme(spacing[3.5])-1px)] py-[calc(theme(spacing[2.5])-1px)] sm:px-[calc(theme(spacing.3)-1px)] sm:py-[calc(theme(spacing[1.5])-1px)]',
+			'relative block h-full !pr-24 w-full  appearance-none rounded-lg px-[calc(theme(spacing[3.5])-1px)] py-[calc(theme(spacing[2.5])-1px)] sm:px-[calc(theme(spacing.3)-1px)] sm:py-[calc(theme(spacing[1.5])-1px)]',
 		   // Typography
 		   'text-base/6 text-zinc-950 placeholder:text-zinc-500 sm:text-sm/6 dark:text-white',
 		   // Border
@@ -51,7 +54,8 @@ export const Textarea = forwardRef(function Textarea(
 		   // Resizable
 		   resizable ? 'resize-y' : 'resize-none',
 		])}
-	  />
+			
+			/>
     </span>
    )
 })

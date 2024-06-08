@@ -31,7 +31,7 @@ import {Input, InputGroup} from "../common/input.tsx";
 function Layout({children}: { children: React.ReactNode }) {
     const sidebarItems = [
         {href: "/", label: "Home", icon: HomeIcon},
-        {href: "/events", label: "Notifications", icon: BellIcon},
+        {href: "/chat", label: "Notifications", icon: BellIcon},
         {href: "/friends", label: "Friends", icon: UserGroupIcon},
         {href: "/broadcasts", label: "Discover", icon: GlobeAltIcon}
     ];
@@ -133,7 +133,6 @@ function Layout({children}: { children: React.ReactNode }) {
           }
        >
            {/* The page content */}
-           
            {children}
        </SidebarLayout>
     
