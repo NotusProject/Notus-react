@@ -2,7 +2,7 @@ import Elysia from "elysia";
 import { getIdFromUsername, logger } from "../../appwrite";
 import { createChat } from "../../appwrite/chats";
 
-const chats = new Elysia({ prefix: "chats" })
+export const chats = new Elysia({ prefix: "chats" })
 	.onError((error) => {
 		logger.error(error);
 		return { message: "Internal server error" };
