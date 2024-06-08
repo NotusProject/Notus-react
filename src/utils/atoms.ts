@@ -32,7 +32,7 @@ export const friendsAtom = selector({
 		const ids = friendDocuments.documents.map((doc) => {
 			return doc.friend !== user.$id ? doc.friend : doc.user;
 		}) as string[];
-
+		console.log(user);
 		const pending: string[] = friendDocuments.documents
 			.filter((doc) => doc.status === "PENDING")
 			.map((doc) => (doc.friend !== user.$id ? doc.friend : doc.user));
@@ -44,11 +44,13 @@ export const friendsAtom = selector({
 		if (ids.length === 0) {
 			return { friends: [], requests: [] };
 		}
-		let userQuery = Query.equal("$id", ids);
+		let userQuery = Query.equal("id", ids);
 
 		const all = await database.listDocuments("default", "users", [userQuery]);
-		const friends = all.documents.filter((doc) => accepted.includes(doc.$id));
-		const requests = all.documents.filter((doc) => pending.includes(doc.$id));
+		console.log(all);
+
+		const friends = all.documents.filter((doc) => accepted.includes(doc.id));
+		const requests = all.documents.filter((doc) => pending.includes(doc.id));
 
 		return { friends, requests };
 	},
