@@ -2,6 +2,10 @@ import Elysia, { t } from "elysia";
 import { Permission, Role, Query, ID } from "node-appwrite";
 import { getIdFromUsername, database, logger } from "../../appwrite";
 
+const write = (id: string) => Permission.write(Role.user(id));
+const read = (id: string) => Permission.read(Role.user(id));
+const readWrite = (id: string) => [read(id), write(id)];
+
 export const friends = new Elysia({ prefix: "friends" })
 
 	.get(
@@ -10,18 +14,11 @@ export const friends = new Elysia({ prefix: "friends" })
 			const executor = request.headers.get("x-appwrite-user-id");
 			const friend = await getIdFromUsername(params.username);
 
-			if (friend === executor) {
-				set.status = "Bad Request";
-				return { message: "User cannot be friend with themselves" };
-			}
-
-			const write = (id: string) => Permission.write(Role.user(id));
-			const read = (id: string) => Permission.read(Role.user(id));
-			const readWrite = (id: string) => [read(id), write(id)];
 			if (!friend || !executor) {
 				set.status = "Not Found";
 				return { message: "User not found" };
 			}
+
 			const friendRequest = await database.listDocuments("default", "friends", [
 				Query.equal("user", executor),
 				Query.equal("friend", friend),
@@ -70,7 +67,7 @@ export const friends = new Elysia({ prefix: "friends" })
 			);
 			if (friendDocument.documents.length === 0) {
 				set.status = "Not Found";
-				return { message: "User is not a friend" };
+				return { message: "No friend found" };
 			}
 			await database.updateDocument(
 				"default",
