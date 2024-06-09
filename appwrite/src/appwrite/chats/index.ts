@@ -43,6 +43,7 @@ export async function createChat(
 		Query.or(ors),
 	]);
 	logger.log("Friend found");
+	logger.log(users);
 	const lablesPromises = users.map((user) =>
 		appwriteUsers.updateLabels(user, [chatId])
 	);
