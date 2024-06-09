@@ -1,14 +1,14 @@
 import {Tab, TabGroup, TabList, TabPanel, TabPanels} from "@headlessui/react";
 import {motion} from "framer-motion";
-import {Fragment, useState} from "react";
+import {Fragment, useEffect, useState} from "react";
 import {Button} from "../components/common/button.tsx";
 import {Input, InputGroup} from "../components/common/input.tsx";
 import {MagnifyingGlassIcon} from "@heroicons/react/20/solid";
 import UsersTable from "../components/layout/FriendsPage/UsersTable.tsx";
 import RequestTable from "../components/layout/FriendsPage/RequestTable.tsx";
 import {AddFriends} from "../components/layout/FriendsPage/AddFriends.tsx";
-import {friendsAtom} from "../utils/atoms.ts";
-import {useRecoilValue} from "recoil";
+import {client, friendsAtom} from "../utils/atoms.ts";
+import {useRecoilRefresher_UNSTABLE, useRecoilValue} from "recoil";
 
 const tabs = [
 	{name: "Online", current: true},
@@ -22,8 +22,26 @@ function classNames(...classes: string[]) {
 
 export default function FriendsTab() {
 	const [selectedIndex, setSelectedIndex] = useState(0);
-	const friends = useRecoilValue(friendsAtom);
-
+	const friendsState = useRecoilValue(friendsAtom);
+	const refreshFriends = useRecoilRefresher_UNSTABLE(friendsAtom);
+	
+	useEffect(() => {
+		const unsubscribe = client.subscribe(
+			 "databases.default.collections.friends.documents",
+			 (response) => {
+				 if (
+						response.events.includes("databases.default.collections.friends.documents.*.create") ||
+						response.events.includes("databases.default.collections.friends.documents.*.update")
+				 ) {
+					 refreshFriends();
+				 }
+			 }
+		);
+		
+		return () => {
+			unsubscribe();
+		};
+	}, [refreshFriends]);
 	return (
 		 <>
 			 <TabGroup selectedIndex={selectedIndex} onChange={setSelectedIndex}>
@@ -96,7 +114,7 @@ export default function FriendsTab() {
 								 <Input name="search" placeholder="Search&hellip;" aria-label="Search"/>
 							 </InputGroup>
 							 <div className="mt-4 text-zinc-500 dark:text-zinc-400">
-								 <UsersTable users={friends.friends}/>
+								 <UsersTable users={friendsState.friends}/>
 							 </div>
 						 </section>
 					 </TabPanel>
@@ -108,13 +126,13 @@ export default function FriendsTab() {
 								 <Input name="search" placeholder="Search&hellip;" aria-label="Search"/>
 							 </InputGroup>
 							 <div className="mt-4 text-zinc-500 dark:text-zinc-400">
-								 <UsersTable users={friends.friends}/>
+								 <UsersTable users={friendsState.friends}/>
 							 </div>
 						 </section>
 					 </TabPanel>
 					 {/*  Tab 3*/}
 					 <TabPanel>
-						 <RequestTable users={friends.requests}/>
+						 <RequestTable users={friendsState.requests}/>
 					 
 					 </TabPanel>
 					 {/*  Tab 4*/}

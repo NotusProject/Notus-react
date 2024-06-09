@@ -1,5 +1,6 @@
-import { atom, selector } from "recoil";
-import { Client, Databases, Models, Query } from "appwrite";
+import {atom, selector} from "recoil";
+import {Client, Databases, Models, Query} from "appwrite";
+import {UserRelationships} from "./helpers.ts";
 
 export const client = new Client()
 	.setEndpoint("https://appwrite.wasimhub.dev/v1")
@@ -19,39 +20,30 @@ export const loadingAtom = atom<boolean>({
 
 export const friendsAtom = selector({
 	key: "friends",
-	get: async ({ get }) => {
+	get: async ({get}) => {
 		const user = get(userAtom);
 		if (!user) {
-			console.log("No user found");
-			return { friends: [], requests: [] };
+			return {friends: [], requests: []};
 		}
-
+		
 		const friendDocuments = await database.listDocuments("default", "friends");
-		console.log(friendDocuments.documents);
-
-		const ids = friendDocuments.documents.map((doc) => {
-			return doc.friend !== user.$id ? doc.friend : doc.user;
-		}) as string[];
-		console.log(user);
-		const pending: string[] = friendDocuments.documents
-			.filter((doc) => doc.status === "PENDING")
-			.map((doc) => (doc.friend !== user.$id ? doc.friend : doc.user));
-
-		const accepted: string[] = friendDocuments.documents
-			.filter((doc) => doc.status === "ACCEPTED")
-			.map((doc) => (doc.friend !== user.$id ? doc.friend : doc.user));
-
+		
+		const userFriend = new UserRelationships(user.$id, friendDocuments.documents);
+		const ids = friendDocuments.documents.map((doc) => userFriend.getFriendOrUser(doc)) as string[];
+		
+		const pending = userFriend.getPendingRequests();
+		const accepted = userFriend.getAcceptedFriends();
+		
 		if (ids.length === 0) {
-			return { friends: [], requests: [] };
+			return {friends: [], requests: []};
 		}
-		let userQuery = Query.equal("$id", ids);
-
+		
+		const userQuery = Query.equal("$id", ids);
 		const all = await database.listDocuments("default", "users", [userQuery]);
-		console.log(all);
-
+		
 		const friends = all.documents.filter((doc) => accepted.includes(doc.$id));
 		const requests = all.documents.filter((doc) => pending.includes(doc.$id));
-
-		return { friends, requests };
+		
+		return {friends, requests};
 	},
 });
