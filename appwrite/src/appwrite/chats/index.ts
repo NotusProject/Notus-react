@@ -42,13 +42,15 @@ export async function createChat(
 		Query.equal("status", "ACCEPTED"),
 		Query.or(ors),
 	]);
+	logger.log("Friend found");
 	const lablesPromises = users.map((user) =>
 		appwriteUsers.updateLabels(user, [chatId])
 	);
+
 	if (friend.documents.length !== users.length - 1) return false;
-
+	logger.log("Creating chat Promise");
 	await Promise.all(lablesPromises);
-
+	logger.log("Creating chat Promise done");
 	return await database.createDocument(
 		"default",
 		"chats",
