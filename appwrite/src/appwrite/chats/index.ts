@@ -1,4 +1,4 @@
-import { ID, Permission, Query, Role, Users } from "node-appwrite";
+import { ID, Permission, Query, Role, Users, type Models } from "node-appwrite";
 import { database, logger, users as appwriteUsers } from "../index";
 
 export async function getChats(requestorId: string) {
@@ -14,9 +14,14 @@ export async function getChat(chatId: string) {
 }
 export async function getFriendChat(executorId: string, friendID: string) {
 	const chat = await database.listDocuments("default", "chats", [
-		Query.equal("users", [executorId, friendID]),
+		Query.contains("users", executorId),
 	]);
-	return chat.documents.at(0);
+	const docs = chat.documents as User[];
+	const doc = docs.find((doc) => doc.users.length === 2);
+	return doc;
+}
+interface User extends Models.Document {
+	users: string[];
 }
 export async function createChat(
 	requestorId: string,
