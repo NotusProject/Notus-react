@@ -1,4 +1,4 @@
-import Elysia, { t } from "elysia";
+import Elysia from "elysia";
 import { swagger } from "@elysiajs/swagger";
 import { cors } from "@elysiajs/cors";
 import { friends } from "./routes/friends";

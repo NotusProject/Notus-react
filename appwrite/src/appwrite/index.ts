@@ -1,4 +1,11 @@
-import { Client, Databases, Permission, Query, Role } from "node-appwrite";
+import {
+	Client,
+	Databases,
+	Permission,
+	Query,
+	Role,
+	Users,
+} from "node-appwrite";
 
 export const apiKey = Bun.env["APPWRITE_API_KEY"]!;
 export const client = new Client()
@@ -17,7 +24,7 @@ export async function getIdFromUsername(username: string) {
 	}
 	return users.documents[0].$id;
 }
-
+export const users = new Users(client);
 export const logger = {
 	log: (message: Object | any[] | string | number) => {
 		if (message instanceof Object || typeof message === "object") {
