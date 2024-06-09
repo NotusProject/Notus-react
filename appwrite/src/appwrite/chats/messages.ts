@@ -15,7 +15,7 @@ export async function createMessage(
 		messageId,
 		{
 			chat: chatId,
-			message,
+			content: message,
 			sender: senderId,
 		},
 		[
