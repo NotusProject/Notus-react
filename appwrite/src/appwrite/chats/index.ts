@@ -1,5 +1,5 @@
-import { ID, Permission, Query, Role } from "node-appwrite";
-import { database, logger } from "../index";
+import { ID, Permission, Query, Role, Users } from "node-appwrite";
+import { database, logger, users as appwriteUsers } from "../index";
 
 export async function getChats(requestorId: string) {
 	const chats = await database.listDocuments("default", "chats", [
@@ -12,13 +12,22 @@ export async function getChat(chatId: string) {
 	const chat = await database.getDocument("default", "chats", chatId);
 	return chat;
 }
-
+export async function getFriendChat(executorId: string, friendID: string) {
+	const chat = await database.listDocuments("default", "chats", [
+		Query.equal("users", [executorId, friendID]),
+	]);
+	return chat.documents.at(0);
+}
 export async function createChat(
 	requestorId: string,
 	users: string[],
-	title?: string
+	title?: string,
+	type: "DIRECT" | "GROUP" = "DIRECT"
 ) {
 	users = [...new Set([...users, requestorId])];
+
+	const chatId = ID.unique();
+
 	const isFriendQuery = (id: string) =>
 		Query.or([Query.equal("user", id), Query.equal("friend", id)]);
 
@@ -28,28 +37,23 @@ export async function createChat(
 		Query.equal("status", "ACCEPTED"),
 		Query.or(ors),
 	]);
-	logger.log(ors);
-	logger.log(friend.documents);
+	const lablesPromises = users.map((user) =>
+		appwriteUsers.updateLabels(user, [chatId])
+	);
 	if (friend.documents.length !== users.length - 1) return false;
 
-	const read = users.map((user) => [
-		Permission.read(Role.user(user)),
-		Permission.write(Role.user(user)),
-	]);
+	await Promise.all(lablesPromises);
 
-	const permissions = [...read.flat()];
-	logger.log("permissions");
-	logger.log(permissions);
 	return await database.createDocument(
 		"default",
 		"chats",
-		ID.unique(),
+		chatId,
 		{
 			users,
 			title,
-			type: "DIRECT",
+			type,
 		},
-		permissions
+		[Permission.write(Role.label(chatId)), Permission.read(Role.user(chatId))]
 	);
 }
 
