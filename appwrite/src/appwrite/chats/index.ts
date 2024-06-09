@@ -14,7 +14,7 @@ export async function getChat(chatId: string) {
 }
 export async function getFriendChat(executorId: string, friendID: string) {
 	const chat = await database.listDocuments("default", "chats", [
-		Query.contains("users", executorId),
+		Query.contains("users", [executorId, friendID]),
 	]);
 	const docs = chat.documents as User[];
 	const doc = docs.find((doc) => doc.users.length === 2);
