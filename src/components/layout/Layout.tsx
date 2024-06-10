@@ -27,8 +27,9 @@ import {Tab, TabGroup, TabList, TabPanel, TabPanels} from '@headlessui/react'
 import {Fragment} from "react";
 import {MediaObject} from "./MediaObject.tsx";
 import {Input, InputGroup} from "../common/input.tsx";
+import {Outlet} from "react-router-dom";
 
-function Layout({children}: { children: React.ReactNode }) {
+function Layout() {
     const sidebarItems = [
         {href: "/", label: "Home", icon: HomeIcon},
         {href: "/chat", label: "Notifications", icon: BellIcon},
@@ -133,7 +134,7 @@ function Layout({children}: { children: React.ReactNode }) {
           }
        >
            {/* The page content */}
-           {children}
+           <Outlet/>
        </SidebarLayout>
     
     )
