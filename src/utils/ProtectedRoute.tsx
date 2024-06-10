@@ -5,7 +5,12 @@ import {useAuth} from '../hooks/useAuth';
 export default function ProtectedRoute() {
     const {user, loading} = useAuth();
     
-    if (loading) {
+    console.log('User:', user);
+    console.log('Loading:', loading);
+    
+    if (user === null) {
+        return <Navigate to="/login"/>
+    } else if (loading) {
         return <div>Loading</div>;
     }
     

@@ -12,10 +12,11 @@ export function useAuth() {
 		async function checkUserStatus() {
 			try {
 				const accountDetails = await account.get();
+				console.log('Account details:', accountDetails);
 				setUser(accountDetails);
 			} catch (error) {
 				console.error('Error checking user status:', error);
-				setUser(null); // Set user to null if there's an error
+				setUser(null);
 			} finally {
 				setLoading(false);
 			}
@@ -23,6 +24,5 @@ export function useAuth() {
 		
 		checkUserStatus();
 	}, [setUser, setLoading]);
-	
 	return {user, loading};
 }

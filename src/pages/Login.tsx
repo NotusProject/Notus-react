@@ -7,9 +7,12 @@ import {Link, useNavigate} from "react-router-dom";
 import {FormEvent, useRef} from "react";
 import {account} from "../services/appwrite.ts";
 import Spline3D from "../components/layout/Spline3D.tsx";
+import {userAtom} from "../utils/atoms.ts";
+import {useSetRecoilState} from "recoil";
 
 export default function Login() {
    const loginForm = useRef<HTMLFormElement>(null);
+	const setUser = useSetRecoilState(userAtom);
 	const navigate = useNavigate();
    const handleLogin = async (e: FormEvent<HTMLFormElement>) => {
 	  e.preventDefault();
@@ -19,6 +22,7 @@ export default function Login() {
 	  try {
 		 const response = await account.createEmailPasswordSession(email, password);
 		 console.log("User has been Logged In:", response);
+			setUser(response);
 		 // Redirect or perform further actions upon successful login
 			navigate('/');
 	  } catch (error) {
