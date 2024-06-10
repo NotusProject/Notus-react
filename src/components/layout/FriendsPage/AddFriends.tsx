@@ -2,7 +2,7 @@ import { Input, InputGroup } from "../../common/input.tsx";
 import { MagnifyingGlassIcon } from "@heroicons/react/20/solid";
 import { Button } from "../../common/button.tsx";
 import { FormEvent, useState } from "react";
-import { api } from "../../../services/appwrite.ts";
+import { api } from "../../../services/appwrite/appwrite.ts";
 
 export function AddFriends() {
 	const [username, setUsername] = useState("");

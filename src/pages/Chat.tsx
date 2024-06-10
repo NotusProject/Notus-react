@@ -19,7 +19,6 @@ import {
 import { Avatar } from "../components/common/avatar.tsx";
 import { Badge } from "../components/common/badge.tsx";
 import { Textarea } from "../components/common/textarea.tsx";
-import { useEffect, useRef, useState } from "react";
 import { useLoaderData } from "react-router-dom";
 import { Message as MessageType } from "../types";
 import { useRecoilValue } from "recoil";
