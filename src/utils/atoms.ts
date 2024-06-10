@@ -1,6 +1,7 @@
-import {atom, selector} from "recoil";
-import {Client, Databases, Models, Query} from "appwrite";
-import {UserRelationships} from "./helpers.ts";
+import { atom, selector } from "recoil";
+import { Client, Databases, Models, Query } from "appwrite";
+import { UserRelationships } from "./helpers.ts";
+import { User } from "../types/index.ts";
 
 export const client = new Client()
 	.setEndpoint("https://appwrite.wasimhub.dev/v1")
@@ -20,30 +21,37 @@ export const loadingAtom = atom<boolean>({
 
 export const friendsAtom = selector({
 	key: "friends",
-	get: async ({get}) => {
+	get: async ({ get }) => {
 		const user = get(userAtom);
 		if (!user) {
-			return {friends: [], requests: []};
+			return { friends: [], requests: [] };
 		}
-		
+
 		const friendDocuments = await database.listDocuments("default", "friends");
-		
-		const userFriend = new UserRelationships(user.$id, friendDocuments.documents);
-		const ids = friendDocuments.documents.map((doc) => userFriend.getFriendOrUser(doc)) as string[];
-		
+
+		const userFriend = new UserRelationships(
+			user.$id,
+			friendDocuments.documents
+		);
+		const ids = friendDocuments.documents.map((doc) =>
+			userFriend.getFriendOrUser(doc)
+		) as string[];
+
 		const pending = userFriend.getPendingRequests();
 		const accepted = userFriend.getAcceptedFriends();
-		
+
 		if (ids.length === 0) {
-			return {friends: [], requests: []};
+			return { friends: [], requests: [] };
 		}
-		
+
 		const userQuery = Query.equal("$id", ids);
 		const all = await database.listDocuments("default", "users", [userQuery]);
-		
-		const friends = all.documents.filter((doc) => accepted.includes(doc.$id));
+
+		const friends = all.documents.filter((doc) =>
+			accepted.includes(doc.$id)
+		) as User[];
 		const requests = all.documents.filter((doc) => pending.includes(doc.$id));
-		
-		return {friends, requests};
+
+		return { friends, requests };
 	},
 });
