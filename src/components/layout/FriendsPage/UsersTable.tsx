@@ -6,6 +6,10 @@ import {ChatBubbleLeftIcon} from "@heroicons/react/20/solid";
 import {Dropdown, DropdownButton, DropdownItem, DropdownMenu} from "../../common/dropdown.tsx";
 import {EllipsisHorizontalIcon} from "@heroicons/react/24/solid";
 
+import {useRecoilValue} from "recoil";
+import {userAtom} from "../../../utils/atoms.ts";
+import {useNavigate} from "react-router-dom";
+
 /**
  * Represents a user.
  *
@@ -26,6 +30,9 @@ import {EllipsisHorizontalIcon} from "@heroicons/react/24/solid";
  */
 export default function UsersTable({users}: { users: any[] }) {
 	console.log(users);
+	const user = useRecoilValue(userAtom);
+	const navigate = useNavigate();
+	console.log(user);
 	return (
 		 <Table className="[--gutter:theme(spacing.6)] sm:[--gutter:theme(spacing.8)]">
 			 <TableHead>
@@ -57,7 +64,7 @@ export default function UsersTable({users}: { users: any[] }) {
 							</TableCell>
 							<TableCell className="text-zinc-500 space-x-2 flex justify-end">
 								<div className="-mx-3 my-1.5 sm:-mx-2.5 flex gap-4">
-									<Button color="light">
+									<Button color="light" onClick={() => navigate(`/chat/${user.username}`)}>
 										<ChatBubbleLeftIcon/>
 									</Button>
 									<Dropdown>

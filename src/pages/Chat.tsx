@@ -15,8 +15,12 @@ import {Avatar} from "../components/common/avatar.tsx";
 import {Badge} from "../components/common/badge.tsx";
 import {Textarea} from "../components/common/textarea.tsx";
 import {useEffect, useRef, useState} from "react";
+import {useLoaderData, useParams} from "react-router-dom";
 
 export function Chat() {
+	const {username} = useParams<{ username: string }>();
+	let team = useLoaderData();
+	console.log(team);
 	const [textareaRows, setTextareaRows] = useState(2);
 	const textareaRef = useRef<HTMLTextAreaElement>(null);
 	
@@ -39,6 +43,8 @@ export function Chat() {
 			};
 		}
 	}, []);
+	//fetch chat witr the username
+	
 	return (
 		 <section className="h-screen grid grid-rows-[auto_1fr_auto] pb-7">
 			 <UserActionBar/>
