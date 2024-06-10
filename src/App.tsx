@@ -15,6 +15,7 @@ import { Chat } from "./pages/Chat.tsx";
 import FriendsPage from "./pages/Friends.tsx";
 import { Query } from "appwrite";
 import { api, database } from "./services/appwrite/appwrite.ts";
+import { Suspense } from "react";
 
 function App() {
 	return (

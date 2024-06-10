@@ -7,12 +7,11 @@ import { Link, useNavigate } from "react-router-dom";
 import { FormEvent, useRef } from "react";
 import { account } from "../services/appwrite/appwrite.ts";
 import Spline3D from "../components/layout/Spline3D.tsx";
-import {userAtom} from "../utils/atoms.ts";
-import {useSetRecoilState} from "recoil";
+import { userAtom } from "../utils/atoms.ts";
+import { useSetRecoilState } from "recoil";
 
 export default function Login() {
 	const loginForm = useRef<HTMLFormElement>(null);
-   const loginForm = useRef<HTMLFormElement>(null);
 	const setUser = useSetRecoilState(userAtom);
 	const navigate = useNavigate();
 	const handleLogin = async (e: FormEvent<HTMLFormElement>) => {
@@ -37,28 +36,6 @@ export default function Login() {
 		<>
 			<div className="flex relative  z-10 min-h-full flex-1 flex-col justify-center py-6 sm:px-6 lg:px-8">
 				<Spline3D />
-   const handleLogin = async (e: FormEvent<HTMLFormElement>) => {
-	  e.preventDefault();
-	  const email = loginForm.current?.email?.value as string;
-	  const password = loginForm.current?.password?.value as string;
-	  
-	  try {
-		 const response = await account.createEmailPasswordSession(email, password);
-		 console.log("User has been Logged In:", response);
-			setUser(response);
-		 // Redirect or perform further actions upon successful login
-			navigate('/');
-	  } catch (error) {
-		 console.error("Login failed:", error);
-		 // Handle login errors appropriately
-	  }
-   };
-   return (
-	 <>
-
-		 <div
-			 className="flex relative  z-10 min-h-full flex-1 flex-col justify-center py-6 sm:px-6 lg:px-8">
-			 <Spline3D/>
 
 				<div className="sm:mx-auto sm:w-full sm:max-w-md">
 					<img
