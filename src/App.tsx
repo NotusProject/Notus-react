@@ -5,19 +5,16 @@ import {
 	Route,
 	RouterProvider,
 } from "react-router-dom";
-import { RecoilRoot, useRecoilState, useRecoilValue } from "recoil";
+import { RecoilRoot } from "recoil";
 import Titlebar from "./components/layout/TitleBar";
 import Login from "./pages/Login.tsx";
 import Register from "./pages/Register.tsx";
 import Layout from "./components/layout/Layout.tsx";
 import ProtectedRoute from "./utils/ProtectedRoute.tsx";
 import { Chat } from "./pages/Chat.tsx";
-import React, { Suspense } from "react";
 import FriendsPage from "./pages/Friends.tsx";
-import { api } from "./services/appwrite.ts";
-import { database, friendsAtom, userAtom } from "./utils/atoms.ts";
 import { Query } from "appwrite";
-import { Message } from "./types";
+import { api, database } from "./services/appwrite/appwrite.ts";
 
 function App() {
 	return (
