@@ -1,24 +1,50 @@
-@import '@fontsource/geist-sans/300.css';
-@import '@fontsource/geist-sans/400.css';
-@import '@fontsource/geist-sans/500.css';
-@import '@fontsource/geist-sans/600.css';
-@import '@fontsource/geist-sans/700.css';
-@import '@fontsource/geist-sans/800.css';
-@import '@fontsource/geist-sans/900.css';
+@import "@fontsource/geist-sans/300.css";
+@import "@fontsource/geist-sans/400.css";
+@import "@fontsource/geist-sans/500.css";
+@import "@fontsource/geist-sans/600.css";
+@import "@fontsource/geist-sans/700.css";
+@import "@fontsource/geist-sans/800.css";
+@import "@fontsource/geist-sans/900.css";
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-body, html {
-    @apply bg-white lg:bg-zinc-100 dark:bg-zinc-900 dark:lg:bg-zinc-950 h-full overflow-hidden ;
+body,
+html {
+	@apply bg-white lg:bg-zinc-100 dark:bg-zinc-900 dark:lg:bg-zinc-950 h-full overflow-hidden;
 }
 
 header {
-    @apply md:!hidden;
+	@apply md:!hidden;
 }
 
 * {
-    @apply font-sans
+	@apply font-sans;
 }
 /*html.dark body {*/
 /*    background-image: radial-gradient(at 100% 0%, hsla(258, 89%, 66%, 0.7) 0px, transparent 50%)*/
 /*}*/
+
+* {
+	--sb-track-color: rgba(35, 46, 51, 0);
+	--sb-thumb-color: rgb(209 213 219 / 0.85);
+	--sb-size: 5px;
+}
+*::-webkit-scrollbar {
+	width: var(--sb-size);
+}
+
+*::-webkit-scrollbar-track {
+	background: var(--sb-track-color);
+	border-radius: 3px;
+}
+
+*::-webkit-scrollbar-thumb {
+	background: var(--sb-thumb-color);
+	border-radius: 3px;
+}
+
+@supports not selector(::-webkit-scrollbar) {
+	* {
+		scrollbar-color: var(--sb-thumb-color) var(--sb-track-color);
+	}
+}

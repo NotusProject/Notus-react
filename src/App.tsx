@@ -21,6 +21,7 @@ import { Messages } from "./types/appwrite/messages.ts";
 function App() {
 	return (
 		<RecoilRoot>
+			{/* @ts-ignore */}
 			{window["__TAURI__"] ? <Titlebar /> : null}
 			<RouterProvider router={router} />
 		</RecoilRoot>
@@ -44,10 +45,14 @@ const fetchChat = async (username: string) => {
 		const messagesResponse = await database.listDocuments<Messages>(
 			"default",
 			"messages",
-			[Query.equal("chat", chatId)]
+			[
+				Query.equal("chat", chatId),
+				Query.orderDesc("$createdAt"),
+				Query.limit(100),
+			]
 		);
 		console.log("messagesResponse", messagesResponse);
-		return { messages: messagesResponse.documents, data };
+		return { messages: messagesResponse.documents.reverse(), data };
 	} catch (error) {
 		console.error("Error fetching chat:", error);
 		return null;
