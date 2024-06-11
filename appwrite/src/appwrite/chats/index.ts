@@ -1,5 +1,7 @@
 import { ID, Permission, Query, Role, Users, type Models } from "node-appwrite";
 import { database, logger, users as appwriteUsers } from "../index";
+import type { Chats } from "../types/chats";
+import type { Friends } from "../types/friends";
 
 export async function getChats(requestorId: string) {
 	const chats = await database.listDocuments("default", "chats", [
@@ -13,16 +15,14 @@ export async function getChat(chatId: string) {
 	return chat;
 }
 export async function getFriendChat(executorId: string, friendID: string) {
-	const chat = await database.listDocuments("default", "chats", [
+	const chat = await database.listDocuments<Chats>("default", "chats", [
 		Query.contains("users", [executorId, friendID]),
 	]);
-	const docs = chat.documents as User[];
+	const docs = chat.documents;
 	const doc = docs.find((doc) => doc.users.length === 2);
 	return doc;
 }
-interface User extends Models.Document {
-	users: string[];
-}
+
 export async function createChat(
 	requestorId: string,
 	users: string[],
@@ -38,7 +38,7 @@ export async function createChat(
 
 	const ors: string[] = users.map(isFriendQuery);
 
-	const friend = await database.listDocuments("default", "friends", [
+	const friend = await database.listDocuments<Friends>("default", "friends", [
 		Query.equal("status", "ACCEPTED"),
 		Query.or(ors),
 	]);
@@ -52,7 +52,7 @@ export async function createChat(
 	logger.log("Creating chat Promise");
 	await Promise.all(lablesPromises);
 	logger.log("Creating chat Promise done");
-	return await database.createDocument(
+	return await database.createDocument<Chats>(
 		"default",
 		"chats",
 		chatId,

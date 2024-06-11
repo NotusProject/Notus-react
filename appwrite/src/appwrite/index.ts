@@ -1,11 +1,5 @@
-import {
-	Client,
-	Databases,
-	Permission,
-	Query,
-	Role,
-	Users,
-} from "node-appwrite";
+import { Client, Databases, Query, Users } from "node-appwrite";
+import type { Users as UsersModel } from "./types/users";
 
 export const apiKey = Bun.env["APPWRITE_API_KEY"]!;
 export const client = new Client()
@@ -16,7 +10,7 @@ export const client = new Client()
 export const database = new Databases(client);
 
 export async function getIdFromUsername(username: string) {
-	const users = await database.listDocuments("default", "users", [
+	const users = await database.listDocuments<UsersModel>("default", "users", [
 		Query.equal("username", username),
 	]);
 	if (users.documents.length === 0) {

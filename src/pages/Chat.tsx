@@ -23,16 +23,20 @@ import { useLoaderData } from "react-router-dom";
 import { Message as MessageType } from "../types";
 import { useRecoilValue } from "recoil";
 import { friendsAtom, userAtom } from "../utils/atoms.ts";
-import { Models } from "appwrite";
 import useAutoResizeTextarea from "../hooks/useAutoResizeTextarea.tsx";
+import { Chats } from "../types/appwrite/chats.ts";
+import { Messages } from "../types/appwrite/messages.ts";
+import { api, client } from "../services/appwrite/appwrite.ts";
 export function Chat() {
-	let { documents, data } = useLoaderData() as {
-		documents: Models.Document[];
-		data: any;
+	const textareaRef = useAutoResizeTextarea(6);
+	let { messages, data } = useLoaderData() as {
+		messages: Messages[];
+		data: Chats;
 	};
 
-	const { friends } = useRecoilValue(friendsAtom);
 	const currentUser = useRecoilValue(userAtom);
+	const friends = useRecoilValue(friendsAtom);
+
 	if (!currentUser) return null;
 
 	const friendsId = (data.users as string[]).find(
@@ -43,16 +47,29 @@ export function Chat() {
 	//fetch manually later
 	if (!friend) return null;
 
-	const messages: MessageType[] = documents.map((doc) => ({
+	const list: MessageType[] = messages.map((doc) => ({
 		username:
 			currentUser.$id != doc.sender ? friend.username : currentUser.name,
 		content: doc.content,
 		avatar: friend.avatar,
 		date: new Date(doc.$createdAt),
 	}));
-	const textareaRef = useAutoResizeTextarea(6);
 
-	//fetch chat witr the username
+	client.subscribe(
+		"databases.default.collections.messages.documents",
+		async (event: { payload: Messages }) => {
+			console.log(event);
+			messages.push(event.payload);
+		}
+	);
+
+	async function sendMessage() {
+		const chatId = data.$id;
+		const message = textareaRef.current?.value;
+		if (!message) return;
+		await api.chats.messages.send.post({ chatId, content: message });
+		console.log("Message sent");
+	}
 
 	return (
 		<section className="h-screen grid grid-rows-[auto_1fr_auto] pb-7">
@@ -60,8 +77,8 @@ export function Chat() {
 			<div className="overflow-y-auto py-4  ">
 				{/* Chat content goes here */}
 				{/* Add more chat messages */}
-				{messages.map((message) => (
-					<Message key={message.date.getUTCMilliseconds()} {...message} />
+				{list.map((message, i) => (
+					<Message key={i} {...message} />
 				))}
 			</div>
 			<div className="p-6 px-2 ">
@@ -81,7 +98,11 @@ export function Chat() {
 								<PaperClipIcon className="!size-5 fill-zinc-500" />
 							</Button>
 						</div>
-						<Button plain={true} className="!text-zinc-500">
+						<Button
+							plain={true}
+							onClick={sendMessage}
+							className="!text-zinc-500"
+						>
 							<PaperAirplaneIcon className="!size-5 fill-violet-600 group-hover:text-red-500" />
 						</Button>
 					</div>

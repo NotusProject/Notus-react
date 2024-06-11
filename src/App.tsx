@@ -16,11 +16,12 @@ import FriendsPage from "./pages/Friends.tsx";
 import { Query } from "appwrite";
 import { api, database } from "./services/appwrite/appwrite.ts";
 import { Suspense } from "react";
+import { Messages } from "./types/appwrite/messages.ts";
 
 function App() {
 	return (
 		<RecoilRoot>
-			<Titlebar />
+			{window["__TAURI__"] ? <Titlebar /> : null}
 			<RouterProvider router={router} />
 		</RecoilRoot>
 	);
@@ -29,7 +30,10 @@ function App() {
 export default App;
 const fetchChat = async (username: string) => {
 	try {
+		console.log("Fetching chat");
+
 		const { data } = await api.chats.user({ username: username! }).get();
+		console.log("Fetched data done", data);
 		if (!data) return null;
 		if ("message" in data) {
 			console.log("Error fetching chat:", data.message);
@@ -37,13 +41,13 @@ const fetchChat = async (username: string) => {
 		}
 		const chatId = data.$id;
 
-		const messagesResponse = await database.listDocuments(
+		const messagesResponse = await database.listDocuments<Messages>(
 			"default",
 			"messages",
 			[Query.equal("chat", chatId)]
 		);
-
-		return { documents: messagesResponse.documents, data };
+		console.log("messagesResponse", messagesResponse);
+		return { messages: messagesResponse.documents, data };
 	} catch (error) {
 		console.error("Error fetching chat:", error);
 		return null;

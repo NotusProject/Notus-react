@@ -1,6 +1,7 @@
 import Elysia, { t } from "elysia";
 import { Permission, Role, Query, ID } from "node-appwrite";
 import { getIdFromUsername, database, logger } from "../../appwrite";
+import type { Friends } from "../../appwrite/types/friends";
 
 export const friends = new Elysia({ prefix: "friends" })
 	.onError((error) => {
@@ -26,10 +27,11 @@ export const friends = new Elysia({ prefix: "friends" })
 				set.status = "Not Found";
 				return { message: "User not found" };
 			}
-			const friendRequest = await database.listDocuments("default", "friends", [
-				Query.equal("user", executor),
-				Query.equal("friend", friend),
-			]);
+			const friendRequest = await database.listDocuments<Friends>(
+				"default",
+				"friends",
+				[Query.equal("user", executor), Query.equal("friend", friend)]
+			);
 
 			if (friendRequest.documents.length > 0) {
 				set.status = "Bad Request";
@@ -67,7 +69,7 @@ export const friends = new Elysia({ prefix: "friends" })
 				set.status = "Unauthorized";
 				return { message: "Not logged in" };
 			}
-			const friendDocument = await database.listDocuments(
+			const friendDocument = await database.listDocuments<Friends>(
 				"default",
 				"friends",
 				[Query.equal("user", executor), Query.equal("friend", friend)]
@@ -112,10 +114,11 @@ export const friends = new Elysia({ prefix: "friends" })
 			set.status = "Unauthorized";
 			return { message: "Not logged in" };
 		}
-		const friendDocument = await database.listDocuments("default", "friends", [
-			Query.equal("user", executor),
-			Query.equal("friend", friend),
-		]);
+		const friendDocument = await database.listDocuments<Friends>(
+			"default",
+			"friends",
+			[Query.equal("user", executor), Query.equal("friend", friend)]
+		);
 		if (friendDocument.documents.length === 0) {
 			set.status = "Not Found";
 			return { message: "User is not a friend" };

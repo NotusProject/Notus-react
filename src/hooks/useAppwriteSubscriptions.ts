@@ -53,25 +53,29 @@ export const useAppwriteSubscriptions = () => {
 		["database.documents.delete", handleDeleteEvent],
 	]);
 
-	useEffect(() => {
-		const channels = ["databases.default.collections.friends.documents"];
+	// useEffect(() => {
+	// 	const channels = [
+	// 		"databases.default.collections.friends.documents",
+	// 		"databases.*",
+	// 		"databases.default.collections.messages.documents",
+	// 	];
 
-		const unsubscribe = client.subscribe(
-			channels,
-			(response: RealtimeResponseEvent<RealtimeEventPayload>) => {
-				const { events, payload } = response;
-				events.forEach((event) => {
-					const handler = eventHandlers.get(event);
-					if (handler) {
-						handler(payload);
-					}
-				});
-			}
-		);
+	// 	const unsubscribe = client.subscribe(
+	// 		channels,
+	// 		(response: RealtimeResponseEvent<RealtimeEventPayload>) => {
+	// 			const { events, payload } = response;
+	// 			events.forEach((event) => {
+	// 				const handler = eventHandlers.get(event);
+	// 				if (handler) {
+	// 					handler(payload);
+	// 				}
+	// 			});
+	// 		}
+	// 	);
 
-		return () => {
-			unsubscribe();
-		};
-	}, []);
+	// 	return () => {
+	// 		unsubscribe();
+	// 	};
+	// }, []);
 	return [user, setUser];
 };
