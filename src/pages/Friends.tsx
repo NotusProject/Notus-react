@@ -1,15 +1,15 @@
-import { Tab, TabGroup, TabList, TabPanel, TabPanels } from "@headlessui/react";
-import { motion } from "framer-motion";
-import { Fragment, useEffect, useState } from "react";
-import { Button } from "../components/common/button.tsx";
-import { Input, InputGroup } from "../components/common/input.tsx";
-import { MagnifyingGlassIcon } from "@heroicons/react/20/solid";
+import {Tab, TabGroup, TabList, TabPanel, TabPanels} from "@headlessui/react";
+import {motion} from "framer-motion";
+import {Fragment, useState} from "react";
+import {Button} from "../components/common/button.tsx";
+import {Input, InputGroup} from "../components/common/input.tsx";
+import {MagnifyingGlassIcon} from "@heroicons/react/20/solid";
 import UsersTable from "../components/layout/FriendsPage/UsersTable.tsx";
 import RequestTable from "../components/layout/FriendsPage/RequestTable.tsx";
-import { AddFriends } from "../components/layout/FriendsPage/AddFriends.tsx";
-import { friendsAtom } from "../utils/atoms.ts";
-import { useRecoilRefresher_UNSTABLE, useRecoilValue } from "recoil";
-import { client } from "../services/appwrite/appwrite.ts";
+import {AddFriends} from "../components/layout/FriendsPage/AddFriends.tsx";
+import {friendsAtom, requestsAtom} from "../utils/atoms.ts";
+import {useRecoilValue} from "recoil";
+
 
 const tabs = [
 	{ name: "Online", current: true },
@@ -23,30 +23,10 @@ function classNames(...classes: string[]) {
 
 export default function FriendsTab() {
 	const [selectedIndex, setSelectedIndex] = useState(0);
-	const friendsState = useRecoilValue(friendsAtom);
-	const refreshFriends = useRecoilRefresher_UNSTABLE(friendsAtom);
-
-	useEffect(() => {
-		const unsubscribe = client.subscribe(
-			"databases.default.collections.friends.documents",
-			(response) => {
-				if (
-					response.events.includes(
-						"databases.default.collections.friends.documents.*.create"
-					) ||
-					response.events.includes(
-						"databases.default.collections.friends.documents.*.update"
-					)
-				) {
-					refreshFriends();
-				}
-			}
-		);
-
-		return () => {
-			unsubscribe();
-		};
-	}, [refreshFriends]);
+	const friendsList = useRecoilValue(friendsAtom);
+	const friendRequestsList = useRecoilValue(requestsAtom);
+	
+	
 	return (
 		<>
 			<TabGroup selectedIndex={selectedIndex} onChange={setSelectedIndex}>
@@ -136,7 +116,7 @@ export default function FriendsTab() {
 								/>
 							</InputGroup>
 							<div className="mt-4 text-zinc-500 dark:text-zinc-400">
-								<UsersTable users={friendsState.friends} />
+								<UsersTable users={friendsList}/>
 							</div>
 						</section>
 					</TabPanel>
@@ -152,13 +132,13 @@ export default function FriendsTab() {
 								/>
 							</InputGroup>
 							<div className="mt-4 text-zinc-500 dark:text-zinc-400">
-								<UsersTable users={friendsState.friends} />
+								<UsersTable users={friendsList}/>
 							</div>
 						</section>
 					</TabPanel>
 					{/*  Tab 3*/}
 					<TabPanel>
-						<RequestTable users={friendsState.requests} />
+						<RequestTable users={friendRequestsList}/>
 					</TabPanel>
 					{/*  Tab 4*/}
 					<TabPanel>
