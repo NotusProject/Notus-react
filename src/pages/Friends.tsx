@@ -8,7 +8,7 @@ import UsersTable from "../components/layout/FriendsPage/UsersTable.tsx";
 import RequestTable from "../components/layout/FriendsPage/RequestTable.tsx";
 import {AddFriends} from "../components/layout/FriendsPage/AddFriends.tsx";
 import {friendsAtom, requestsAtom} from "../utils/atoms.ts";
-import {useRecoilValue} from "recoil";
+import {useRecoilState} from "recoil";
 import {toast} from "sonner";
 import FriendRequest from "../components/common/FriendRequest.tsx";
 
@@ -25,8 +25,8 @@ function classNames(...classes: string[]) {
 
 export default function FriendsTab() {
 	const [selectedIndex, setSelectedIndex] = useState(0);
-	const friendsList = useRecoilValue(friendsAtom);
-	const friendRequestsList = useRecoilValue(requestsAtom);
+	const [friendsList] = useRecoilState(friendsAtom);
+	const [friendRequestsList] = useRecoilState(requestsAtom);
 	
 	
 	return (
@@ -137,7 +137,7 @@ export default function FriendsTab() {
 									aria-label="Search"
 								/>
 							</InputGroup>
-							<div className="mt-4 text-zinc-500 dark:text-zinc-400">
+							<div className="mt-4 text-zinc-500  dark:text-zinc-400">
 								<UsersTable users={friendsList}/>
 							</div>
 						</section>

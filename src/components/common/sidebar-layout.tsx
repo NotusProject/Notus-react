@@ -105,7 +105,7 @@ export function SidebarLayout({
 		   <div
 					className="grow overflow-auto   !py-0 !px-2 lg:rounded-lg lg:bg-white lg:p-10 lg:shadow-sm lg:ring-1 lg:ring-zinc-950/5 dark:lg:bg-zinc-900 dark:lg:ring-white/10">
 				 {/* *mx-auto rezidible todo*/}
-				 <div className=" mx-auto max-w-6xl  ">{children}</div>
+				 <div className=" ">{children}</div>
 		   </div>
 		</main>
 	 </div>

@@ -3,6 +3,9 @@ import {useEffect} from "react";
 import {useRecoilState} from "recoil";
 import {friendsAtom, requestsAtom, userAtom} from "../utils/atoms.ts";
 import {FriendsService} from "../services/appwrite/friendsService.ts";
+import {client} from "../services/appwrite/appwrite.ts";
+import {RealtimeResponseEvent} from "appwrite";
+import {Friends} from "../types/appwrite/friends.ts";
 
 // dummy type for now
 interface RealtimeEventPayload {
@@ -32,6 +35,24 @@ export const useAppwriteSubscriptions = () => {
 
 	const handleCreateAndUpdateEvent = async (payload: RealtimeEventPayload) => {
 		//handle create and update event
+		
+		console.log('handleCreateAndUpdateEvent', payload)
+		switch (payload.$collectionId) {
+			case "friends":
+				const friend = payload as unknown as Friends;
+				
+				console.log(friend)
+				const userIndex = friends.findIndex((f) => f.$id === friend.$id);
+				
+				if (userIndex !== -1) {
+					friends[userIndex] = friend.friend.$id !== user!.$id ? friend.friend : friend.user;
+					setFriends(friends);
+				} else {
+					friends.push(friend.friend.$id !== user!.$id ? friend.friend : friend.user);
+				}
+				break;
+		}
+		
 	};
 	const handleDeleteEvent = (payload: RealtimeEventPayload) => {
 		//handle delete event
@@ -51,30 +72,30 @@ export const useAppwriteSubscriptions = () => {
 		],
 		["database.documents.delete", handleDeleteEvent],
 	]);
-
-	// useEffect(() => {
-	// 	const channels = [
-	// 		"databases.default.collections.friends.documents",
-	// 		"databases.*",
-	// 		"databases.default.collections.messages.documents",
-	// 	];
-
-	// 	const unsubscribe = client.subscribe(
-	// 		channels,
-	// 		(response: RealtimeResponseEvent<RealtimeEventPayload>) => {
-	// 			const { events, payload } = response;
-	// 			events.forEach((event) => {
-	// 				const handler = eventHandlers.get(event);
-	// 				if (handler) {
-	// 					handler(payload);
-	// 				}
-	// 			});
-	// 		}
-	// 	);
-
-	// 	return () => {
-	// 		unsubscribe();
-	// 	};
-	// }, []);
+	
+	useEffect(() => {
+		const channels = [
+			"databases.default.collections.friends.documents",
+			"databases.*",
+			"databases.default.collections.messages.documents",
+		];
+		
+		const unsubscribe = client.subscribe(
+			 channels,
+			 (response: RealtimeResponseEvent<RealtimeEventPayload>) => {
+				 const {events, payload} = response;
+				 events.forEach((event) => {
+					 const handler = eventHandlers.get(event);
+					 if (handler) {
+						 handler(payload);
+					 }
+				 });
+			 }
+		);
+		
+		return () => {
+			unsubscribe();
+		};
+	}, []);
 	return [user, setUser];
 };

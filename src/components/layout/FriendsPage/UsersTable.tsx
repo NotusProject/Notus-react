@@ -34,7 +34,7 @@ export default function UsersTable({users}: { users: any[] }) {
 	const navigate = useNavigate();
 	console.log(user);
 	return (
-		 <Table className="[--gutter:theme(spacing.6)] sm:[--gutter:theme(spacing.8)]">
+		 <Table className="">
 			 <TableHead>
 				 <TableRow>
 					 <TableHeader>Name</TableHeader>
@@ -42,7 +42,7 @@ export default function UsersTable({users}: { users: any[] }) {
 					 <TableHeader></TableHeader>
 				 </TableRow>
 			 </TableHead>
-			 <TableBody>
+			 <TableBody className="overflow-hidden">
 				 {users.map((user) => (
 						<TableRow key={user.username}>
 							<TableCell>
@@ -63,7 +63,7 @@ export default function UsersTable({users}: { users: any[] }) {
 								{user.status === 'ONLINE' ? <Badge color="lime">Online</Badge> : <Badge color="zinc">Offline</Badge>}
 							</TableCell>
 							<TableCell className="text-zinc-500 space-x-2 flex justify-end">
-								<div className="-mx-3 my-1.5 sm:-mx-2.5 flex gap-4">
+								<div className="my-1.5  flex gap-4">
 									<Button color="light" onClick={() => navigate(`/chat/${user.username}`)}>
 										<ChatBubbleLeftIcon/>
 									</Button>

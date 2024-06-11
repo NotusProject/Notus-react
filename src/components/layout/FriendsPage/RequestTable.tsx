@@ -5,7 +5,7 @@ import {Button} from "../../common/button.tsx";
 export default function RequestTable({users}: { users: any[] }) {
 	console.log(users);
 	return (
-		 <Table className="[--gutter:theme(spacing.6)] sm:[--gutter:theme(spacing.8)]">
+		 <Table className="">
 			 <TableHead>
 				 <TableRow>
 					 <TableHeader>Friend Request - {users.length}</TableHeader>
