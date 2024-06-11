@@ -1,11 +1,11 @@
 // useAppwriteSubscriptions.ts
-import {useEffect} from "react";
-import {useRecoilState} from "recoil";
-import {friendsAtom, requestsAtom, userAtom} from "../utils/atoms.ts";
-import {FriendsService} from "../services/appwrite/friendsService.ts";
-import {client} from "../services/appwrite/appwrite.ts";
-import {RealtimeResponseEvent} from "appwrite";
-import {Friends} from "../types/appwrite/friends.ts";
+import { useEffect } from "react";
+import { useRecoilState } from "recoil";
+import { friendsAtom, requestsAtom, userAtom } from "../utils/atoms.ts";
+import { FriendsService } from "../services/appwrite/friendsService.ts";
+import { client } from "../services/appwrite/appwrite.ts";
+import { RealtimeResponseEvent } from "appwrite";
+import { Friends } from "../types/appwrite/friends.ts";
 
 // dummy type for now
 interface RealtimeEventPayload {
@@ -20,12 +20,12 @@ interface RealtimeEventPayload {
 export const useAppwriteSubscriptions = () => {
 	const friendsService = new FriendsService();
 	const [friends, setFriends] = useRecoilState(friendsAtom);
-	const [request, setRequest] = useRecoilState(requestsAtom);
+	const [requests, setRequest] = useRecoilState(requestsAtom);
 
 	const [user, setUser] = useRecoilState(userAtom);
 	useEffect(() => {
 		friendsService.refresh(user!.$id).then(() => {
-			console.log(friendsService)
+			console.log(friendsService);
 			setFriends(friendsService.friends);
 			setRequest(friendsService.requests);
 			console.log("Friends", friendsService.friends);
@@ -35,25 +35,55 @@ export const useAppwriteSubscriptions = () => {
 
 	const handleCreateAndUpdateEvent = async (payload: RealtimeEventPayload) => {
 		//handle create and update event
-		
-		console.log('handleCreateAndUpdateEvent', payload)
+
+		console.log("handleCreateAndUpdateEvent", payload);
 		switch (payload.$collectionId) {
 			case "friends":
 				const friend = payload as unknown as Friends;
-				
-				console.log(friend)
-				const userIndex = friends.findIndex((f) => f.$id === friend.$id);
-				
-				if (userIndex !== -1) {
-					friends[userIndex] = friend.friend.$id !== user!.$id ? friend.friend : friend.user;
-					setFriends(friends);
+				const accepted = friend.status === "ACCEPTED";
+				const friendUser =
+					friend.friend.$id !== user!.$id ? friend.friend : friend.user;
+				console.log(friendUser, "friendUser");
+				const userRequestsIndex = friendsService.requests.findIndex(
+					(f) => f.$id === friendUser.$id
+				);
+				const userFriendIndex = friendsService.friends.findIndex(
+					(f) => f.$id === friendUser.$id
+				);
+
+				//update state
+				if (accepted) {
+					//remove from requests
+					if (userRequestsIndex !== -1) {
+						console.log("remove from requests");
+
+						friendsService.requests.splice(userRequestsIndex, 1);
+					}
+
+					//add to friends
+					if (friendUser.$id !== user!.$id) {
+						console.log("add to friends");
+
+						setFriends([...friends, friendUser]);
+					}
 				} else {
-					friends.push(friend.friend.$id !== user!.$id ? friend.friend : friend.user);
+					//add to requests
+					if (userRequestsIndex === -1) {
+						console.log("add to requests");
+						friendsService.requests.push(friendUser);
+					}
+					//remove from friends
+					if (userFriendIndex !== -1) {
+						console.log("remove from friends");
+						friendsService.friends.splice(userFriendIndex, 1);
+					}
 				}
-				
+				setFriends(friendsService.friends);
+				setRequest(friendsService.requests);
+				console.log("Friends", friendsService.friends);
+				console.log("Requests", friendsService.requests);
 				break;
 		}
-		
 	};
 	const handleDeleteEvent = (payload: RealtimeEventPayload) => {
 		//handle delete event
@@ -73,27 +103,27 @@ export const useAppwriteSubscriptions = () => {
 		],
 		["database.documents.delete", handleDeleteEvent],
 	]);
-	
+
 	useEffect(() => {
 		const channels = [
 			"databases.default.collections.friends.documents",
 			"databases.*",
 			"databases.default.collections.messages.documents",
 		];
-		
+
 		const unsubscribe = client.subscribe(
-			 channels,
-			 (response: RealtimeResponseEvent<RealtimeEventPayload>) => {
-				 const {events, payload} = response;
-				 events.forEach((event) => {
-					 const handler = eventHandlers.get(event);
-					 if (handler) {
-						 handler(payload);
-					 }
-				 });
-			 }
+			channels,
+			(response: RealtimeResponseEvent<RealtimeEventPayload>) => {
+				const { events, payload } = response;
+				events.forEach((event) => {
+					const handler = eventHandlers.get(event);
+					if (handler) {
+						handler(payload);
+					}
+				});
+			}
 		);
-		
+
 		return () => {
 			unsubscribe();
 		};
