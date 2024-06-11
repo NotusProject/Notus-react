@@ -51,37 +51,34 @@ export const useAppwriteSubscriptions = () => {
 					(f) => f.$id === friendUser.$id
 				);
 
-				//update state
 				if (accepted) {
-					//remove from requests
 					if (userRequestsIndex !== -1) {
-						console.log("remove from requests");
-
-						friendsService.requests.splice(userRequestsIndex, 1);
+						const newRequests = [...friendsService.requests];
+						newRequests.splice(userRequestsIndex, 1);
+						friendsService.requests = newRequests;
 					}
 
-					//add to friends
 					if (friendUser.$id !== user!.$id) {
-						console.log("add to friends");
-
-						setFriends([...friends, friendUser]);
+						const newFriends = [...friends, friendUser];
+						friendsService.friends = newFriends;
+						setFriends(newFriends);
 					}
 				} else {
-					//add to requests
 					if (userRequestsIndex === -1) {
-						console.log("add to requests");
-						friendsService.requests.push(friendUser);
+						const newRequests = [...friendsService.requests, friendUser];
+						friendsService.requests = newRequests;
 					}
-					//remove from friends
+
 					if (userFriendIndex !== -1) {
-						console.log("remove from friends");
-						friendsService.friends.splice(userFriendIndex, 1);
+						const newFriends = [...friendsService.friends];
+						newFriends.splice(userFriendIndex, 1);
+						friendsService.friends = newFriends;
 					}
 				}
+
 				setFriends(friendsService.friends);
 				setRequest(friendsService.requests);
-				console.log("Friends", friendsService.friends);
-				console.log("Requests", friendsService.requests);
+
 				break;
 		}
 	};
