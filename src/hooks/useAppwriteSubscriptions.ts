@@ -1,6 +1,6 @@
 // useAppwriteSubscriptions.ts
 import { useEffect } from "react";
-import { useRecoilValue } from "recoil";
+import { useRecoilState, useRecoilValue } from "recoil";
 import { friendsAtom, userAtom } from "../utils/atoms.ts";
 import { RealtimeResponseEvent } from "appwrite";
 import { client } from "../services/appwrite/appwrite.ts";
@@ -17,8 +17,9 @@ interface RealtimeEventPayload {
 // TODO: fetch friends and friend requests on mount anyway
 //TODO: seems like recoil caches stuff for us so we good
 export const useAppwriteSubscriptions = () => {
-	const friends = useRecoilValue(friendsAtom);
-	const user = useRecoilValue(userAtom);
+	const friendsService = new FriendsService();
+	const [friends, setFriends] = useRecoilState(friendsAtom);
+	const [user, setUser] = useRecoilState(userAtom);
 	console.log("friends", friends);
 	const handleCreateAndUpdateEvent = async (payload: RealtimeEventPayload) => {
 		//handle create and update event
@@ -45,11 +46,11 @@ export const useAppwriteSubscriptions = () => {
 		console.log("user", user);
 
 		if (!user) return;
-		const friendsService = new FriendsService(user.$id);
-		friendsService.refresh().then(() => {
-			console.log("friends refreshed");
+
+		friendsService.refresh(user.$id).then(() => {
+			setFriends(friendsService.friends);
 		});
-	}, [user]);
+	}, [setUser, user]);
 
 	useEffect(() => {
 		const channels = ["databases.default.collections.friends.documents"];
@@ -71,4 +72,5 @@ export const useAppwriteSubscriptions = () => {
 			unsubscribe();
 		};
 	}, []);
+	return [user, setUser];
 };

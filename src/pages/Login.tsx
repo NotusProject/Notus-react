@@ -21,20 +21,19 @@ export default function Login() {
 		try {
 			const cookieFallback = localStorage.getItem("cookieFallback");
 
-			await account.createEmailPasswordSession(email, password);
-			function storageEventListener(event: StorageEvent): void {
-				if (event.key === "cookieFallback") {
-					if (event.newValue !== cookieFallback && event.newValue != null) {
-						console.log("Redirecting to /");
-						window.removeEventListener("storage", storageEventListener, false);
-						navigate("/");
-						return;
-					}
+			setInterval(() => {
+				const newFallback = localStorage.getItem("cookieFallback");
+				if (
+					newFallback != null &&
+					newFallback != "" &&
+					cookieFallback !== newFallback
+				) {
+					console.log("Redirecting to /");
+					navigate("/");
+					return;
 				}
-				console.log(event);
-			}
-			window.addEventListener("storage", storageEventListener, false);
-
+			}, 100);
+			await account.createEmailPasswordSession(email, password);
 			// Redirect or perform further actions upon successful login
 		} catch (error) {
 			console.error("Login failed:", error);

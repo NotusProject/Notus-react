@@ -10,19 +10,14 @@ export class FriendsService {
 	private all: Users[] = [];
 	friends: Users[] = [];
 	requests: Users[] = [];
-	constructor(private readonly id: string) {
-		this.refresh();
-	}
-	public async refresh(): Promise<void> {
+
+	public async refresh(id: string): Promise<void> {
 		const friendDocuments = await database.listDocuments<Friends>(
 			"default",
 			"friends"
 		);
 
-		const userFriend = new UserRelationships(
-			this.id,
-			friendDocuments.documents
-		);
+		const userFriend = new UserRelationships(id, friendDocuments.documents);
 		const ids = friendDocuments.documents.map((doc) =>
 			userFriend.getFriendOrUser(doc)
 		);
