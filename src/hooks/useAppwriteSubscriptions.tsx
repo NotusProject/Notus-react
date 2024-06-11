@@ -6,7 +6,9 @@ import { FriendsService } from "../services/appwrite/friendsService.ts";
 import { client } from "../services/appwrite/appwrite.ts";
 import { RealtimeResponseEvent } from "appwrite";
 import { Friends } from "../types/appwrite/friends.ts";
-
+import { removeItemAtIndex } from "../utils/helpers.ts";
+import { toast } from "sonner";
+import FriendRequest from "../components/common/FriendRequest.tsx";
 // dummy type for now
 interface RealtimeEventPayload {
 	$collection: string;
@@ -53,26 +55,27 @@ export const useAppwriteSubscriptions = () => {
 
 				if (accepted) {
 					if (userRequestsIndex !== -1) {
-						const newRequests = [...friendsService.requests];
-						newRequests.splice(userRequestsIndex, 1);
-						friendsService.requests = newRequests;
+						friendsService.requests =
+							friendsService.requests.removeItemAtIndex(userRequestsIndex);
 					}
 
 					if (friendUser.$id !== user!.$id) {
-						const newFriends = [...friends, friendUser];
-						friendsService.friends = newFriends;
-						setFriends(newFriends);
+						friendsService.friends = [...friends, friendUser];
 					}
 				} else {
+					//display toast
+					toast.custom(() => <FriendRequest user={friendUser} />, {
+						position: "top-right",
+						className: "w-full ",
+						duration: 5000,
+					});
 					if (userRequestsIndex === -1) {
-						const newRequests = [...friendsService.requests, friendUser];
-						friendsService.requests = newRequests;
+						friendsService.requests = [...friendsService.requests, friendUser];
 					}
 
 					if (userFriendIndex !== -1) {
-						const newFriends = [...friendsService.friends];
-						newFriends.splice(userFriendIndex, 1);
-						friendsService.friends = newFriends;
+						friendsService.friends =
+							friendsService.friends.removeItemAtIndex(userFriendIndex);
 					}
 				}
 

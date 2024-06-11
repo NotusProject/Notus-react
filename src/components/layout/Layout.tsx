@@ -38,7 +38,7 @@ import { Fragment } from "react";
 import { MediaObject } from "./MediaObject.tsx";
 import { Input, InputGroup } from "../common/input.tsx";
 import { Outlet } from "react-router-dom";
-import { useAppwriteSubscriptions } from "../../hooks/useAppwriteSubscriptions.ts";
+import { useAppwriteSubscriptions } from "../../hooks/useAppwriteSubscriptions.tsx";
 
 function Layout() {
 	useAppwriteSubscriptions();
