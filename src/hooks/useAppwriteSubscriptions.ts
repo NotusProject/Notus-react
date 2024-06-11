@@ -50,6 +50,7 @@ export const useAppwriteSubscriptions = () => {
 				} else {
 					friends.push(friend.friend.$id !== user!.$id ? friend.friend : friend.user);
 				}
+				
 				break;
 		}
 		
