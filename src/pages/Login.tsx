@@ -7,26 +7,35 @@ import { Link, useNavigate } from "react-router-dom";
 import { FormEvent, useRef } from "react";
 import { account } from "../services/appwrite/appwrite.ts";
 import Spline3D from "../components/layout/Spline3D.tsx";
-import { userAtom } from "../utils/atoms.ts";
-import { useSetRecoilState } from "recoil";
 
 export default function Login() {
 	const loginForm = useRef<HTMLFormElement>(null);
-	const setUser = useSetRecoilState(userAtom);
+
 	const navigate = useNavigate();
+
 	const handleLogin = async (e: FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
 		const email = loginForm.current?.email?.value as string;
 		const password = loginForm.current?.password?.value as string;
 
 		try {
-			const response = await account.createEmailPasswordSession(
-				email,
-				password
-			);
-			console.log("User has been Logged In:", response);
+			const cookieFallback = localStorage.getItem("cookieFallback");
+
+			await account.createEmailPasswordSession(email, password);
+			function storageEventListener(event: StorageEvent): void {
+				if (event.key === "cookieFallback") {
+					if (event.newValue !== cookieFallback && event.newValue != null) {
+						console.log("Redirecting to /");
+						window.removeEventListener("storage", storageEventListener, false);
+						navigate("/");
+						return;
+					}
+				}
+				console.log(event);
+			}
+			window.addEventListener("storage", storageEventListener, false);
+
 			// Redirect or perform further actions upon successful login
-			navigate("/");
 		} catch (error) {
 			console.error("Login failed:", error);
 			// Handle login errors appropriately

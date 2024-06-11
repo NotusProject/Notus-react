@@ -16,17 +16,16 @@ export function useAuth() {
 				setUser(accountDetails);
 			} catch (error) {
 				console.error("Error checking user status:", error);
-				setUser(null); // Set user to null if there's an error
-				console.error("Error checking user status:", error);
 				setUser(null);
 			} finally {
 				setLoading(false);
+				console.log("User:", user);
+				console.log("Loading:", loading);
 			}
 		}
 
 		checkUserStatus();
 	}, [setUser, setLoading]);
 
-	return { user, loading };
 	return { user, loading };
 }
