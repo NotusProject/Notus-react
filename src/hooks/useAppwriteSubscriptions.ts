@@ -1,7 +1,7 @@
 // useAppwriteSubscriptions.ts
 import { useEffect } from "react";
 import { useRecoilState, useRecoilValue } from "recoil";
-import { friendsAtom, userAtom } from "../utils/atoms.ts";
+import { friendsAtom, requestsAtom, userAtom } from "../utils/atoms.ts";
 import { RealtimeResponseEvent } from "appwrite";
 import { client } from "../services/appwrite/appwrite.ts";
 import { FriendsService } from "../services/appwrite/friendsService.ts";
@@ -19,8 +19,18 @@ interface RealtimeEventPayload {
 export const useAppwriteSubscriptions = () => {
 	const friendsService = new FriendsService();
 	const [friends, setFriends] = useRecoilState(friendsAtom);
+	const [request, setRequest] = useRecoilState(requestsAtom);
+
 	const [user, setUser] = useRecoilState(userAtom);
-	console.log("friends", friends);
+	useEffect(() => {
+		friendsService.refresh(user!.$id).then(() => {
+			setFriends(friendsService.friends);
+			setRequest(friendsService.requests);
+			console.log("Friends", friendsService.friends);
+			console.log("Requests", friendsService.requests);
+		});
+	}, []);
+
 	const handleCreateAndUpdateEvent = async (payload: RealtimeEventPayload) => {
 		//handle create and update event
 	};
@@ -42,15 +52,6 @@ export const useAppwriteSubscriptions = () => {
 		],
 		["database.documents.delete", handleDeleteEvent],
 	]);
-	useEffect(() => {
-		console.log("user", user);
-
-		if (!user) return;
-
-		friendsService.refresh(user.$id).then(() => {
-			setFriends(friendsService.friends);
-		});
-	}, [setUser, user]);
 
 	useEffect(() => {
 		const channels = ["databases.default.collections.friends.documents"];

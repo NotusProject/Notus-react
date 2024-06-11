@@ -1,16 +1,21 @@
 // App.tsx
-import {createBrowserRouter, createRoutesFromElements, Route, RouterProvider,} from "react-router-dom";
-import {RecoilRoot} from "recoil";
+import {
+	createBrowserRouter,
+	createRoutesFromElements,
+	Route,
+	RouterProvider,
+} from "react-router-dom";
+import { RecoilRoot } from "recoil";
 import Titlebar from "./components/layout/TitleBar";
 import Login from "./pages/Login.tsx";
 import Register from "./pages/Register.tsx";
 import Layout from "./components/layout/Layout.tsx";
 import ProtectedRoute from "./utils/ProtectedRoute.tsx";
-import {Chat} from "./pages/Chat.tsx";
+import { Chat } from "./pages/Chat.tsx";
 import FriendsPage from "./pages/Friends.tsx";
-import {Query} from "appwrite";
-import {api, database} from "./services/appwrite/appwrite.ts";
-import {Suspense} from "react";
+import { Query } from "appwrite";
+import { api, database } from "./services/appwrite/appwrite.ts";
+import { Suspense } from "react";
 
 function App() {
 	return (
@@ -47,7 +52,7 @@ const fetchChat = async (username: string) => {
 
 function Home() {
 	return (
-		 <div className={"h-[97vh]"}>
+		<div className={"h-[97vh]"}>
 			<div className={"h-96"}>dd</div>
 			<div className={"h-96"}>dd</div>
 			<div className={"h-96"}>dd</div>
@@ -55,8 +60,7 @@ function Home() {
 			<div className={"h-96 bg-red-500"}>dd</div>
 			<div className={"h-96 bg-red-500"}>dd</div>
 			<div className={"h-96 bg-red-500"}>dd</div>
-			 <div className={"h-96 bg-green-500"}>dd</div>
-			 d
+			<div className={"h-96 bg-green-500"}>dd</div>d
 		</div>
 	);
 }
@@ -66,8 +70,8 @@ const router = createBrowserRouter(
 		<>
 			<Route path="login" element={<Login />} />
 			<Route path="register" element={<Register />} />
-			<Route element={<Layout />}>
-				<Route element={<ProtectedRoute />}>
+			<Route element={<ProtectedRoute />}>
+				<Route element={<Layout />}>
 					<Route path="/" element={<Home />} />
 					<Route
 						path="/chat/:username"
