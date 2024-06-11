@@ -57,7 +57,7 @@ function Layout() {
           sidebar={
               <Sidebar>
                   <TabGroup vertical as={Fragment} defaultIndex={0}>
-                      <TabList className="flex flex-col">
+                      <TabList className="flex flex-col h-full">
                           <SidebarHeader>
                               {/*Server dropdown*/}
                               <ServerDropdown/>
@@ -78,11 +78,11 @@ function Layout() {
                                   </Tab>
                               </SidebarSection>
                           </SidebarHeader>
-                          <TabPanels className="overflow-y-scroll">
+                          <TabPanels className="overflow-auto h-full">
                               
-                              <TabPanel className="">
+                              <TabPanel className="h-full">
                                   
-                                  <SidebarBody className="overflow-y-scroll h-[65vh] 2xl:h-[75vh] ">
+                                  <SidebarBody className="overflow-auto h-full ">
                                       {/*Default Sidebar Body items*/}
                                       <SidebarSection>
                                           {sidebarItems.map((item, index) => (
@@ -122,7 +122,7 @@ function Layout() {
                               </TabPanel>
                               <TabPanel>Content 3</TabPanel>
                           </TabPanels>
-                          <SidebarFooter className="max-lg:hidden absolute bottom-0">
+                          <SidebarFooter className="max-lg:hidden">
                               {/*Profile dropdown*/}
                               <ProfileDropdown/>
                           </SidebarFooter>
