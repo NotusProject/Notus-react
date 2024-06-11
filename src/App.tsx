@@ -1,26 +1,26 @@
 // App.tsx
-import {
-	createBrowserRouter,
-	createRoutesFromElements,
-	Route,
-	RouterProvider,
-} from "react-router-dom";
-import { RecoilRoot } from "recoil";
+import {createBrowserRouter, createRoutesFromElements, Route, RouterProvider,} from "react-router-dom";
+import {RecoilRoot} from "recoil";
 import Titlebar from "./components/layout/TitleBar";
 import Login from "./pages/Login.tsx";
 import Register from "./pages/Register.tsx";
 import Layout from "./components/layout/Layout.tsx";
 import ProtectedRoute from "./utils/ProtectedRoute.tsx";
-import { Chat } from "./pages/Chat.tsx";
+import {Chat} from "./pages/Chat.tsx";
 import FriendsPage from "./pages/Friends.tsx";
-import { Query } from "appwrite";
-import { api, database } from "./services/appwrite/appwrite.ts";
-import { Suspense } from "react";
-import { Messages } from "./types/appwrite/messages.ts";
+import {Query} from "appwrite";
+import {api, database} from "./services/appwrite/appwrite.ts";
+import {Suspense} from "react";
+import {Messages} from "./types/appwrite/messages.ts";
+import {Toaster} from "sonner";
 
 function App() {
 	return (
 		<RecoilRoot>
+			<Toaster
+				 theme={"dark"}
+			/>
+			<Titlebar/>
 			{/* @ts-ignore */}
 			{window["__TAURI__"] ? <Titlebar /> : null}
 			<RouterProvider router={router} />

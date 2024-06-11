@@ -1,7 +1,8 @@
-import { Models } from "appwrite";
+import {Models} from "appwrite";
+import {Users} from "./users.ts";
 
 export interface Friends extends Models.Document {
-	user: string;
-	friend: string;
+	user: Users;
+	friend: Users;
 	status: "ACCEPTED" | "PENDING";
 }

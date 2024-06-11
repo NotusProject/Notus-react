@@ -1,4 +1,4 @@
-import { Friends } from "../types/appwrite/friends";
+import {Friends} from "../types/appwrite/friends";
 
 export class UserRelationships {
 	userId: string;
@@ -10,7 +10,7 @@ export class UserRelationships {
 	}
 
 	getFriendOrUser(doc: Friends) {
-		return doc.friend !== this.userId ? doc.friend : doc.user;
+		return doc.friend.$id !== this.userId ? doc.friend : doc.user;
 	}
 
 	getPendingRequests() {

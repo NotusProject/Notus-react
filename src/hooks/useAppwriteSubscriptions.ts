@@ -1,10 +1,8 @@
 // useAppwriteSubscriptions.ts
-import { useEffect } from "react";
-import { useRecoilState, useRecoilValue } from "recoil";
-import { friendsAtom, requestsAtom, userAtom } from "../utils/atoms.ts";
-import { RealtimeResponseEvent } from "appwrite";
-import { client } from "../services/appwrite/appwrite.ts";
-import { FriendsService } from "../services/appwrite/friendsService.ts";
+import {useEffect} from "react";
+import {useRecoilState} from "recoil";
+import {friendsAtom, requestsAtom, userAtom} from "../utils/atoms.ts";
+import {FriendsService} from "../services/appwrite/friendsService.ts";
 
 // dummy type for now
 interface RealtimeEventPayload {
@@ -24,6 +22,7 @@ export const useAppwriteSubscriptions = () => {
 	const [user, setUser] = useRecoilState(userAtom);
 	useEffect(() => {
 		friendsService.refresh(user!.$id).then(() => {
+			console.log(friendsService)
 			setFriends(friendsService.friends);
 			setRequest(friendsService.requests);
 			console.log("Friends", friendsService.friends);

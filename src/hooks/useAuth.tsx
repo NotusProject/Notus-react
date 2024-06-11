@@ -1,8 +1,8 @@
 // useAuth.tsx
-import { useRecoilState } from "recoil";
-import { account } from "../services/appwrite/appwrite.ts";
-import { useEffect } from "react";
-import { loadingAtom, userAtom } from "../utils/atoms.ts";
+import {useRecoilState} from "recoil";
+import {account, database} from "../services/appwrite/appwrite.ts";
+import {useEffect} from "react";
+import {loadingAtom, userAtom} from "../utils/atoms.ts";
 
 export function useAuth() {
 	const [user, setUser] = useRecoilState(userAtom);
@@ -12,7 +12,8 @@ export function useAuth() {
 		async function checkUserStatus() {
 			try {
 				const accountDetails = await account.get();
-				console.log("Account details:", accountDetails);
+				const user = await database.getDocument("default", "users", accountDetails.$id);
+				accountDetails.prefs.avatar = user.avatar;
 				setUser(accountDetails);
 			} catch (error) {
 				console.error("Error checking user status:", error);
