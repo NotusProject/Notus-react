@@ -1,10 +1,5 @@
-import {
-	Navbar,
-	NavbarItem,
-	NavbarSection,
-	NavbarSpacer,
-} from "../components/common/navbar.tsx";
-import { Button } from "../components/common/button.tsx";
+import {Navbar, NavbarItem, NavbarSection, NavbarSpacer,} from "../components/common/navbar.tsx";
+import {Button} from "../components/common/button.tsx";
 import {
 	EllipsisVerticalIcon,
 	MagnifyingGlassIcon,
@@ -16,99 +11,104 @@ import {
 	TrashIcon,
 	VideoCameraIcon,
 } from "@heroicons/react/20/solid";
-import { Avatar } from "../components/common/avatar.tsx";
-import { Badge } from "../components/common/badge.tsx";
-import { Textarea } from "../components/common/textarea.tsx";
-import { useLoaderData } from "react-router-dom";
-import { Message as MessageType } from "../types";
-import { useRecoilValue } from "recoil";
-import { friendsAtom, userAtom } from "../utils/atoms.ts";
+import {Avatar} from "../components/common/avatar.tsx";
+import {Badge} from "../components/common/badge.tsx";
+import {Textarea} from "../components/common/textarea.tsx";
+import {useLoaderData} from "react-router-dom";
+import {Message as MessageType} from "../types";
+import {useRecoilValue} from "recoil";
+import {friendsAtom, userAtom} from "../utils/atoms.ts";
 import useAutoResizeTextarea from "../hooks/useAutoResizeTextarea.tsx";
-import { Chats } from "../types/appwrite/chats.ts";
-import { Messages } from "../types/appwrite/messages.ts";
-import { api, client } from "../services/appwrite/appwrite.ts";
+import {Chats} from "../types/appwrite/chats.ts";
+import {Messages} from "../types/appwrite/messages.ts";
+import {api, client} from "../services/appwrite/appwrite.ts";
+import {useEffect, useState} from "react";
+
 export function Chat() {
 	const textareaRef = useAutoResizeTextarea(6);
-	let { messages, data } = useLoaderData() as {
+	let {messages: initialMessages, data} = useLoaderData() as {
 		messages: Messages[];
 		data: Chats;
 	};
-
 	const currentUser = useRecoilValue(userAtom);
 	const friends = useRecoilValue(friendsAtom);
-
+	const [messages, setMessages] = useState<Messages[]>(initialMessages);
+	
+	useEffect(() => {
+		const unsubscribe = client.subscribe(
+			 "databases.default.collections.messages.documents",
+			 (event: { payload: Messages }) => {
+				 console.log(event);
+				 setMessages((prevMessages) => [...prevMessages, event.payload]);
+			 }
+		);
+		
+		return () => {
+			unsubscribe();
+		};
+	}, []);
+	
 	if (!currentUser) return null;
-
+	
 	const friendsId = (data.users as string[]).find(
-		(id) => id !== currentUser.$id
+		 (id) => id !== currentUser.$id
 	)!;
-
 	const friend = friends.find((f) => f.$id === friendsId);
-	//fetch manually later
+	
 	if (!friend) return null;
-
+	
 	const list: MessageType[] = messages.map((doc) => ({
 		username:
-			currentUser.$id != doc.sender ? friend.username : currentUser.name,
+			 currentUser.$id != doc.sender ? friend.username : currentUser.name,
 		content: doc.content,
 		avatar: friend.avatar,
 		date: new Date(doc.$createdAt),
 	}));
-
-	client.subscribe(
-		"databases.default.collections.messages.documents",
-		async (event: { payload: Messages }) => {
-			console.log(event);
-			messages.push(event.payload);
-		}
-	);
-
+	
 	async function sendMessage() {
 		const chatId = data.$id;
 		const message = textareaRef.current?.value;
 		if (!message) return;
-		await api.chats.messages.send.post({ chatId, content: message });
+		await api.chats.messages.send.post({chatId, content: message});
 		console.log("Message sent");
 	}
-
+	
 	return (
-		<section className="h-screen grid grid-rows-[auto_1fr_auto] pb-7">
-			<UserActionBar />
-			<div className="overflow-y-auto py-4  ">
-				{/* Chat content goes here */}
-				{/* Add more chat messages */}
-				{list.map((message, i) => (
-					<Message key={i} {...message} />
-				))}
-			</div>
-			<div className="p-6 px-2 ">
-				<Textarea
-					className="group"
-					resizable={false}
-					aria-label="Description"
-					name="description"
-					ref={textareaRef}
-				>
-					<div className="flex items-center z-50 gap-4 absolute top-1/2 right-2 -translate-y-1/2">
-						<div className="flex items-center gap-2 border-r border-zinc-300 dark:border-zinc-700 pr-4">
-							<Button plain={true}>
-								<MicrophoneIcon className="!size-5 fill-zinc-500" />
-							</Button>
-							<Button plain={true} className="!text-zinc-500">
-								<PaperClipIcon className="!size-5 fill-zinc-500" />
-							</Button>
-						</div>
-						<Button
-							plain={true}
-							onClick={sendMessage}
-							className="!text-zinc-500"
-						>
-							<PaperAirplaneIcon className="!size-5 fill-violet-600 group-hover:text-red-500" />
-						</Button>
-					</div>
-				</Textarea>
-			</div>
-		</section>
+		 <section className="h-screen grid grid-rows-[auto_1fr_auto] pb-7">
+			 <UserActionBar/>
+			 <div className="overflow-y-auto py-4">
+				 {list.map((message, i) => (
+						<Message key={i} {...message} />
+				 ))}
+			 </div>
+			 <div className="p-6 px-2">
+				 <Textarea
+						className="group"
+						resizable={false}
+						aria-label="Description"
+						name="description"
+						ref={textareaRef}
+				 >
+					 <div className="flex items-center z-50 gap-4 absolute top-1/2 right-2 -translate-y-1/2">
+						 <div className="flex items-center gap-2 border-r border-zinc-300 dark:border-zinc-700 pr-4">
+							 <Button plain={true}>
+								 <MicrophoneIcon className="!size-5 fill-zinc-500"/>
+							 </Button>
+							 <Button plain={true} className="!text-zinc-500">
+								 <PaperClipIcon className="!size-5 fill-zinc-500"/>
+							 </Button>
+						 </div>
+						 <Button
+								plain={true}
+								onClick={sendMessage}
+								className="!text-zinc-500"
+						 >
+							 <PaperAirplaneIcon className="!size-5 fill-violet-600 group-hover:text-red-500"/>
+						 </Button>
+					 </div>
+				 </Textarea>
+			 </div>
+		 </section>
 	);
 }
 
