@@ -51,6 +51,7 @@ const fetchChat = async (username: string) => {
 				Query.limit(100),
 			]
 		);
+
 		console.log("messagesResponse", messagesResponse);
 		return { messages: messagesResponse.documents.reverse(), data };
 	} catch (error) {
