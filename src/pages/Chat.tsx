@@ -22,7 +22,7 @@ import useAutoResizeTextarea from "../hooks/useAutoResizeTextarea.tsx";
 import {Chats} from "../types/appwrite/chats.ts";
 import {Messages} from "../types/appwrite/messages.ts";
 import {api, client} from "../services/appwrite/appwrite.ts";
-import {useEffect, useState} from "react";
+import {useEffect, useRef, useState} from "react";
 
 export function Chat() {
 	const textareaRef = useAutoResizeTextarea(6);
@@ -33,6 +33,7 @@ export function Chat() {
 	const currentUser = useRecoilValue(userAtom);
 	const friends = useRecoilValue(friendsAtom);
 	const [messages, setMessages] = useState<Messages[]>(initialMessages);
+	const chatContainerRef = useRef<HTMLDivElement>(null);
 	
 	useEffect(() => {
 		const unsubscribe = client.subscribe(
@@ -47,6 +48,17 @@ export function Chat() {
 			unsubscribe();
 		};
 	}, []);
+	
+	useEffect(() => {
+		scrollToBottom();
+	}, [messages]);
+	
+	const scrollToBottom = () => {
+		chatContainerRef.current?.scrollTo({
+			top: chatContainerRef.current.scrollHeight,
+			behavior: 'smooth',
+		});
+	};
 	
 	if (!currentUser) return null;
 	
@@ -76,7 +88,7 @@ export function Chat() {
 	return (
 		 <section className="h-screen grid grid-rows-[auto_1fr_auto] pb-7">
 			 <UserActionBar/>
-			 <div className="overflow-y-auto py-4">
+			 <div ref={chatContainerRef} className="overflow-y-auto py-4">
 				 {list.map((message, i) => (
 						<Message key={i} {...message} />
 				 ))}
