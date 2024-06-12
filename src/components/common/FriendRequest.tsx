@@ -1,12 +1,12 @@
-import { Fragment, useState } from "react";
-import { Transition } from "@headlessui/react";
-import { XMarkIcon } from "@heroicons/react/20/solid";
-import { Button } from "./button.tsx";
-import { Users } from "../../types/appwrite/users.ts";
+import {Fragment, useState} from "react";
+import {Transition} from "@headlessui/react";
+import {XMarkIcon} from "@heroicons/react/20/solid";
+import {Button} from "./button.tsx";
+import {Users} from "../../types/appwrite/users.ts";
 
 export default function FriendRequest({ user }: { user: Users }) {
 	const [show, setShow] = useState(true);
-
+	
 	return (
 		<>
 			{/* Global notification live region, render this permanently at the end of the document */}

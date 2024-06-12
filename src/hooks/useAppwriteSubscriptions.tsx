@@ -1,14 +1,14 @@
 // useAppwriteSubscriptions.ts
-import { useEffect } from "react";
-import { useRecoilState } from "recoil";
-import { friendsAtom, requestsAtom, userAtom } from "../utils/atoms.ts";
-import { FriendsService } from "../services/appwrite/friendsService.ts";
-import { client } from "../services/appwrite/appwrite.ts";
-import { RealtimeResponseEvent } from "appwrite";
-import { Friends } from "../types/appwrite/friends.ts";
-import { removeItemAtIndex } from "../utils/helpers.ts";
-import { toast } from "sonner";
+import {useEffect} from "react";
+import {useRecoilState} from "recoil";
+import {friendsAtom, requestsAtom, userAtom} from "../utils/atoms.ts";
+import {FriendsService} from "../services/appwrite/friendsService.ts";
+import {client} from "../services/appwrite/appwrite.ts";
+import {RealtimeResponseEvent} from "appwrite";
+import {Friends} from "../types/appwrite/friends.ts";
+import {toast} from "sonner";
 import FriendRequest from "../components/common/FriendRequest.tsx";
+
 // dummy type for now
 interface RealtimeEventPayload {
 	$collection: string;
@@ -36,8 +36,11 @@ export const useAppwriteSubscriptions = () => {
 	}, []);
 
 	const handleCreateAndUpdateEvent = async (payload: RealtimeEventPayload) => {
+		const audioElement = document.getElementById('notificationSound') as HTMLAudioElement;
+		if (audioElement) {
+			audioElement.play();
+		}
 		//handle create and update event
-
 		console.log("handleCreateAndUpdateEvent", payload);
 		switch (payload.$collectionId) {
 			case "friends":
