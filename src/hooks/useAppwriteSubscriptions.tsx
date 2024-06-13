@@ -67,7 +67,7 @@ export const useAppwriteSubscriptions = () => {
 					}
 				} else {
 					//display toast
-					toast.custom(() => <FriendRequest user={friendUser} />, {
+					toast.custom(() => <FriendRequest user={friendUser}/>, {
 						position: "top-right",
 						className: "w-full ",
 						duration: 5000,

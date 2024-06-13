@@ -34,7 +34,7 @@ function Layout() {
 	useAppwriteSubscriptions();
 	const sidebarItems = [
 		{ href: "/", label: "Home", icon: HomeIcon },
-		{ href: "/chat", label: "Notifications", icon: BellIcon },
+		{href: "/chat/vynxc", label: "Notifications", icon: BellIcon},
 		{ href: "/friends", label: "Friends", icon: UserGroupIcon },
 		{ href: "/broadcasts", label: "Discover", icon: GlobeAltIcon },
 	];

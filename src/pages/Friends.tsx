@@ -9,8 +9,6 @@ import RequestTable from "../components/layout/FriendsPage/RequestTable.tsx";
 import {AddFriends} from "../components/layout/FriendsPage/AddFriends.tsx";
 import {friendsAtom, requestsAtom} from "../utils/atoms.ts";
 import {useRecoilState} from "recoil";
-import {toast} from "sonner";
-import FriendRequest from "../components/common/FriendRequest.tsx";
 
 
 const tabs = [
@@ -97,11 +95,7 @@ export default function FriendsTab() {
 									</Tab>
 								))}
 								<Tab as={Fragment}>
-									<Button color={"violet"} onClick={() => {
-										toast.custom(() => (
-											 <FriendRequest/>
-										), {position: "top-right", className: "w-full ", duration: 5000});
-									}} className="!mb-3 !py-0">
+									<Button color={"violet"} className="!mb-3 !py-0">
 										Add Friend
 									</Button>
 								</Tab>
