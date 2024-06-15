@@ -19,8 +19,8 @@ export default async function server(ctx: Context): Promise<Response> {
 			return eventrsp;
 		}
 		const request = toRequest(ctx.req);
-		const honoResposne = await app.handle(request);
-		return await toResponse(honoResposne);
+		const resposne = await app.handle(request);
+		return await toResponse(resposne);
 	} catch (e) {
 		if (e instanceof Error) {
 			ctx.error(e.message);
